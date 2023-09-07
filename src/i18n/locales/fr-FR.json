@@ -1,0 +1,252 @@
+{
+  "header": {
+    "account": {
+      "hi": "Bonjour",
+      "ranking": "Mes classements",
+      "parameter": "Mes paramètres",
+      "logout": "Déconnexion"
+    },
+    "search": {
+      "input": "Rechercher un film, une série, un acteur ..."
+    },
+    "login": "Se Connecter"
+  },
+  "tmdb": {
+    "department": {
+      "acting": "Acteur",
+      "technical": "Équipe technique"
+    }
+  },
+  "commun": {
+    "add": "Ajouter",
+    "addfilter": "Ajouter un filtre",
+    "addtheme": "Ajouter un thème",
+    "addvalue": "Ajouter une valeur",
+    "after": "Après",
+    "all": "Tous",
+    "actors": "Acteurs",
+    "backdrop": "Fond d'écran",
+    "before": "Avant",
+    "birthday": "Date de naissance",
+    "cancel": "Annuler",
+    "cast": "Casting",
+    "datenotknow": "Date de sortie inconnu",
+    "deathday": "Date de décès",
+    "description": "Description",
+    "email": "Adresse email",
+    "episode": "épisode",
+    "episodes": "Épisodes",
+    "episodeprev": "Épisode précédent",
+    "episodenext": "Épisode suivant",
+    "error": "Oups une erreur est survenue. Veuillez ressayer",
+    "exact": "Égale à",
+    "filter": "Filtrer",
+    "genre": "Genre",
+    "gueststars": "Vedettes invitées",
+    "logo": "Logo",
+    "minutes": "minutes",
+    "min": "min",
+    "movies": "Films",
+    "myrank": "Mon classement",
+    "name": "Nom",
+    "notseeactor": "Notez l'acteur comme non vu",
+    "notseemovie": "Notez le film comme non vu",
+    "notseeserie": "Notez la série comme non vu",
+    "notavailableinyourlanguage": "Pas disponible dans votre langue",
+    "notice": "Avis",
+    "noresult": "Aucun résultat ne correspond à votre recherche.",
+    "noresultactor": "Aucun acteur n'a été renseigné.",
+    "noresultepisode": "Aucun épisode ne correspond à votre recherche.",
+    "noresultimage": "Aucune image n'a été renseignée.",
+    "noresultmovie": "Aucun film n'a été renseigné.",
+    "noresultserie": "Aucune série n'a été renseignée.",
+    "noresultvideo": "Aucune vidéo n'a été renseignée.",
+    "or": "Ou",
+    "origincountry": "Pays d'origine",
+    "over": "Plus de",
+    "overview": "Aperçu",
+    "myparameters": "Mes Paramètres",
+    "persons": "Personnes",
+    "photos": "Photos",
+    "placeofbirth": "Lieu de naissance",
+    "poster": "Poster",
+    "profile": "Profil",
+    "rankactor": "Notez l'acteur",
+    "rankmovie": "Notez le film",
+    "rankserie": "Notez la série",
+    "rankuser": "Note des utilisateurs",
+    "ranking": "Classement",
+    "rate": "Notez",
+    "results": "Résultats",
+    "runtime": "Durée",
+    "searchactor": "Rechercher un acteur",
+    "season": "Saison",
+    "seasons": "Saisons",
+    "seeMore": "Afficher plus",
+    "seeLess": "Afficher moins",
+    "seeactor": "Notez l'acteur comme vu",
+    "seemovie": "Notez le film comme vu",
+    "seeserie": "Notez la série comme vu",
+    "series": "Séries",
+    "sort": "Trier",
+    "today": "Aujourd'hui",
+    "trailer": "Bande annonce",
+    "translate": "Traduire",
+    "trending": "Tendance",
+    "trendingmovie": "Tendance Films",
+    "trendingserie": "Tendance Séries",
+    "type": "Type",
+    "under": "Moins de",
+    "upcoming": "Prochainement",
+    "username": "Nom d'utilisateur",
+    "validate": "Valider",
+    "videos": "Vidéos",
+    "vote": "Vote",
+    "week": "Semaine",
+    "withgenres": "Avec genre",
+    "withoutgenres": "Sans genre",
+    "year": "Année",
+    "years": "ans"
+  },
+  "sort": {
+    "popularityAsc": "Popularité -/+",
+    "popularityDesc": "Popularité +/-",
+    "voteaverageAsc": "Notes -/+",
+    "voteaverageDesc": "Notes +/-",
+    "primaryreleasedateAsc": "Date de sortie -/+",
+    "primaryreleasedateDesc": "Date de sortie +/-",
+    "titleAsc": "Titre de A-Z",
+    "titleDesc": "Titre de Z-A"
+  },
+  "pages": {
+    "home": {
+      "searchtitle": "Que voulez-vous classer ?",
+      "search": "Rechercher un thème"
+    },
+    "theme": {
+      "search": "Rechercher"
+    },
+    "discover": {
+      "title": "Discover Page"
+    },
+    "login": {
+      "hi": "Bienvenue",
+      "credential": "Entrez vos identifiants pour continuer"
+    },
+    "movie": {
+      "trailer": "Bande annonce",
+      "summary": "Résumé",
+      "minutes": "min"
+    },
+    "person": {
+      "biography": "Bio",
+      "searchmovie": "Rechercher un film",
+      "searchserie": "Rechercher une série"
+    },
+    "serie": {
+      "searchactor": "Rechercher un acteur ou personnage",
+      "noresultactor": "Aucun acteur n'a été renseigné."
+    },
+    "parameters": {
+      "infoemail": "Une confirmation sur l'ancienne et nouvelle adresse mail est nécessaire. Vérifiez vos spams."
+    }
+  },
+  "input": {
+    "dragdrop": {
+      "drophere": "Déposer ici",
+      "text": "Cliquer ou Glisser pour ajouter une image"
+    }
+  },
+  "form": {
+    "login": {
+      "email": "Adresse email",
+      "password": "Mot de passe",
+      "rememberme": "Se souvenir de moi",
+      "createaccount": "Créer un compte",
+      "forgotpassword": "Mot de passe oublié ?",
+      "connect": "Se connecter",
+      "connectgoogle": "Se connecter via Google",
+      "connectmail": "Se connecter via adresse mail",
+      "haveaccount": "Vous n'avez pas de compte ?",
+      "requiredpassword": "Veuillez saisir un mot de passe",
+      "requiredmail": "Veuillez saisir une adresse mail",
+      "formatmail": "Veuillez saisir une adresse mail valide",
+      "errorconnect": "L'adresse email ou le mot de passe est erroné"
+    },
+    "register": {
+      "username": "Nom d'utilisateur *",
+      "email": "Adresse email *",
+      "password": "Mot de passe *",
+      "createaccount": "Créer un compte",
+      "createaccountemail": "Créer un compte via adresse mail",
+      "createaccountgoogle": "Créer un compte via Google",
+      "continue": "Continuer",
+      "requiredusername": "Veuillez saisir un nom d'utilisateur",
+      "uniqueusername": "Nom d'utilisateur déjà pris",
+      "requiredpassword": "Veuillez saisir un mot de passe",
+      "minpassword": "Veuillez saisir un mot de passe de plus de 6 caractères",
+      "requiredmail": "Veuillez saisir une adresse mail",
+      "formatmail": "Veuillez saisir une adresse mail valide",
+      "alreadyaccount": "Déjà un compte ?",
+      "connect": "Connectez-vous"
+    },
+    "forgotpassword": {
+      "forgotpassword": "Mot de passe oublié ?",
+      "email": "Adresse email *",
+      "createaccount": "Créer un compte",
+      "continue": "Continuer",
+      "requiredmail": "Veuillez saisir une adresse mail",
+      "formatmail": "Veuillez saisir une adresse mail valide",
+      "modality": "Veuillez saisir l'adresse e-mail utilisée lors de votre inscription. Vous recevrez un e-mail contenant les instructions à suivre pour réinitialiser votre mot de passe.",
+      "connection": "Connexion",
+      "notforget": "Se souvenir de votre mot de passe ?",
+      "successsendmail": "Email envoyé",
+      "limitsendemail": "Veuillez attendre 60s avant de renvoyer un email"
+    },
+    "resetpassword": {
+      "resetpassword": "Réinitialiser votre mot de passe",
+      "password": "Mot de passe *",
+      "confirmpassword": "Confirmation du mot de passe *",
+      "continue": "Continuer",
+      "passwordmatch": "Les mots de passe doivent correspondre",
+      "requiredpassword": "Veuillez saisir un mot de passe",
+      "minpassword": "Veuillez saisir un mot de passe de plus de 6 caractères"
+    },
+    "createtheme": {
+      "name": "Nom *",
+      "language": "Langue *",
+      "englishname": "Traduction du nom en anglais *",
+      "description": "Description",
+      "requiredname": "Veuillez saisir un nom",
+      "requiredenglishname": "Veuillez saisir la traduction du nom en anglais",
+      "requiredlanguage": "Veuillez sélectionner une langue",
+      "requiredimage": "Veuillez choisir une image",
+      "existtheme": "Attention, plusieurs thèmes correspondents déjà à ce titre."
+    },
+    "createvalue": {
+      "name": "Nom *",
+      "language": "Langue *",
+      "englishname": "Traduction du nom en anglais *",
+      "description": "Description",
+      "requiredname": "Veuillez saisir un nom",
+      "requiredenglishname": "Veuillez saisir la traduction du nom en anglais",
+      "requiredlanguage": "Veuillez sélectionner une langue",
+      "requiredimage": "Veuillez choisir une image"
+    },
+    "rate": {
+      "requiredrate": "Veuillez saisir une note",
+      "requiredrank": "Veuillez un classement",
+      "minmaxrank": "Veuillez un classement entre {{min}} et {{max}} ",
+      "opinion": "Avis",
+      "rank": "Classement"
+    }
+  },
+  "card": {
+    "summary": "Résumé",
+    "knowfor": "Connu pour"
+  },
+  "alert": {
+    "updateusernamesuccess": "Votre modification de nom d'utilisateur à été pris en compte.",
+    "updateemailsuccess": "Votre modification d'addresse mail est en cours. Veuillez confirmer sur votre ancien et nouveau email."
+  }
+}

@@ -1,0 +1,21 @@
+import { ProfileUpdate } from "src/models/Profile";
+import { supabase } from "../supabase";
+
+export const SUPABASE_PROFILE_TABLE = "profiles";
+
+export const countUsernameProfile = (username: string) =>
+  supabase
+    .from(SUPABASE_PROFILE_TABLE)
+    .select("*", { count: "exact", head: true })
+    .eq("username", username);
+
+export const getProfil = (uuid: string) =>
+  supabase.from(SUPABASE_PROFILE_TABLE).select().eq("id", uuid).single();
+
+export const updateProfil = (profil: ProfileUpdate) =>
+  supabase
+    .from(SUPABASE_PROFILE_TABLE)
+    .update(profil)
+    .eq("id", profil.id)
+    .select()
+    .single();

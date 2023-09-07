@@ -1,0 +1,43 @@
+import { Author } from "../commun/Author";
+import { Genre } from "../commun/Genre";
+import { Network } from "../commun/Network";
+import { ProductionCompany } from "../commun/ProductionCompany";
+import { ProductionCountry } from "../commun/ProductionCountry";
+import { SpokenLanguage } from "../commun/SpokenLanguage";
+import { Episode } from "./Episode";
+import { Season } from "./Season";
+
+export interface SerieDetails {
+  adult: boolean;
+  backdrop_path: string;
+  created_by: Array<Author>;
+  episode_run_time: Array<number>;
+  first_air_date: string;
+  genres: Array<Genre>;
+  homepage: string;
+  id: number;
+  in_production: boolean;
+  languages: Array<string>;
+  last_air_date: string;
+  last_episode_to_air: null | Episode;
+  name: string;
+  next_episode_to_air: null | Episode;
+  networks: Array<Network>;
+  number_of_episodes: number;
+  number_of_seasons: number;
+  origin_country: Array<string>;
+  original_language: string;
+  original_name: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  production_companies: Array<ProductionCompany>;
+  production_countries: Array<ProductionCountry>;
+  seasons: Array<Season>;
+  spoken_languages: Array<SpokenLanguage>;
+  status: string;
+  tagline: string;
+  type: string;
+  vote_average: number;
+  vote_count: number;
+}
