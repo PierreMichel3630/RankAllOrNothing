@@ -743,6 +743,81 @@ export const CardValueTranslate = ({ value }: PropsCardValueTranslate) => {
   );
 };
 
+interface PropsCardRankBasic {
+  rank: RankDetail;
+  index: number;
+}
+
+export const CardRankBasic = ({ index, rank }: PropsCardRankBasic) => {
+  const { t } = useTranslation();
+  const { language } = useContext(UserContext);
+  const isTradLocal = language.id === rank.language;
+
+  return (
+    <Card
+      className={classes(cardCss, cardHeightCss)}
+      sx={{ position: "relative" }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: percent(2),
+          left: percent(2),
+        }}
+      >
+        <RankBadge rank={index + 1} />
+      </div>
+
+      <CardMedia
+        sx={{
+          width: percent(100),
+          aspectRatio: "auto",
+          maxHeight: percent(100),
+          minHeight: px(250),
+          cursor: "grab",
+        }}
+        image={getUrlPublic(BUCKET_VALUE, rank.image)}
+        title={rank.name}
+      />
+      <CardContent sx={{ position: "relative", mt: 1 }}>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: percent(2),
+            transform: "translate(0%,-65%)",
+          }}
+        >
+          <VoteBadge value={rank.notation} tooltip={rank.opinion} />
+        </div>
+
+        {isTradLocal ? (
+          <>
+            <Typography variant="h4">{rank.name}</Typography>
+            <Tooltip title={rank.description} placement="top">
+              <Typography
+                variant="body1"
+                sx={{
+                  display: "-webkit-box",
+                  overflow: "hidden",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
+                }}
+              >
+                {rank.description}
+              </Typography>
+            </Tooltip>
+          </>
+        ) : (
+          <Alert severity="info" variant="outlined" sx={{ mt: 1 }}>
+            {t("commun.notavailableinyourlanguage")}
+          </Alert>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
 interface PropsCardRank {
   rank: RankDetail;
   rate: () => void;
@@ -1054,6 +1129,150 @@ export const CardRankTmdb = ({
               </IconButton>
             </Grid>
           </CardActions>
+        </>
+      )}
+    </Card>
+  );
+};
+
+interface PropsCardRankTmdbProfile {
+  rank: RankDetail;
+  index: number;
+}
+
+export const CardRankTmdbProfile = ({
+  index,
+  rank,
+}: PropsCardRankTmdbProfile) => {
+  const { language } = useContext(UserContext);
+
+  const [value, setValue] = useState<undefined | ItemToRank>(undefined);
+  const [loading, setLoading] = useState(true);
+
+  const getItemTMDB = () => {
+    const id = rank.id_extern;
+    if (language && id !== null) {
+      switch (rank.type as MediaType) {
+        case MediaType.tv:
+          getTvDetails(Number(id), language.iso).then((res) => {
+            setValue({
+              id: Number(id),
+              name: res.name,
+              image: `https://image.tmdb.org/t/p/w500${res.poster_path}`,
+              description: res.overview,
+              type: MediaType.tv,
+            });
+            setLoading(false);
+          });
+          break;
+        case MediaType.movie:
+          getMovieDetails(Number(id), language.iso).then((res) => {
+            setValue({
+              id: Number(id),
+              name: res.title,
+              image: `https://image.tmdb.org/t/p/w500${res.poster_path}`,
+              description: res.overview,
+              type: MediaType.movie,
+            });
+            setLoading(false);
+          });
+          break;
+        case MediaType.person:
+          getPersonDetails(Number(id), language.iso).then((res) => {
+            setValue({
+              id: Number(id),
+              name: res.name,
+              image: `https://image.tmdb.org/t/p/w500${res.profile_path}`,
+              description: res.biography,
+              type: MediaType.person,
+            });
+            setLoading(false);
+          });
+          break;
+        default:
+          getMovieDetails(Number(id), language.iso).then((res) => {
+            setValue({
+              id: Number(id),
+              name: res.title,
+              image: `https://image.tmdb.org/t/p/w500${res.poster_path}`,
+              description: res.overview,
+              type: MediaType.movie,
+            });
+            setLoading(false);
+          });
+          break;
+      }
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getItemTMDB();
+  }, [rank, language]);
+
+  return (
+    <Card
+      className={classes(cardCss, cardHeightCss)}
+      sx={{ position: "relative" }}
+    >
+      {loading || value === undefined ? (
+        <>
+          <Skeleton
+            variant="rectangular"
+            sx={{ width: percent(100), height: px(250) }}
+          />
+          <CardContent>
+            <Skeleton width="60%" />
+            <Skeleton width="20%" />
+          </CardContent>
+        </>
+      ) : (
+        <>
+          <div
+            style={{
+              position: "absolute",
+              top: percent(2),
+              left: percent(2),
+            }}
+          >
+            <RankBadge rank={index + 1} />
+          </div>
+          <CardMedia
+            sx={{
+              width: percent(100),
+              aspectRatio: "2/3",
+              minHeight: px(300),
+              cursor: "grab",
+            }}
+            image={value.image}
+            title={value.name}
+          />
+          <CardContent sx={{ position: "relative", mt: 1, pb: 1 }}>
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                right: percent(2),
+                transform: "translate(0%,-65%)",
+              }}
+            >
+              <VoteBadge value={rank.notation} tooltip={rank.opinion} />
+            </div>
+            <Typography variant="h4">{value.name}</Typography>
+            <Tooltip title={value.description} placement="bottom">
+              <Typography
+                variant="body1"
+                sx={{
+                  display: "-webkit-box",
+                  overflow: "hidden",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
+                }}
+              >
+                {value.description}
+              </Typography>
+            </Tooltip>
+          </CardContent>
         </>
       )}
     </Card>

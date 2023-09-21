@@ -1,5 +1,5 @@
 import { Container, Grid, Tab, Tabs } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -40,6 +40,10 @@ export const FriendsPage = () => {
   const handleChangeTab = (_: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
   };
+
+  useEffect(() => {
+    setTab(menuSelect);
+  }, [menuSelect]);
 
   return (
     <Container maxWidth="lg">

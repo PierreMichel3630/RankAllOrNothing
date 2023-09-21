@@ -96,18 +96,22 @@ export const AccountMenu = ({ user }: Props) => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <div className={divCss}>
-          <AvatarAccount avatar={profile ? profile.avatar : "1"} />
+        {profile && (
           <div>
-            {profile && (
-              <Typography variant="h6">{profile.username}</Typography>
-            )}
-            <Typography variant="caption" color="secondary">
-              {user.email}
-            </Typography>
+            <div className={divCss}>
+              <AvatarAccount avatar={profile.avatar} size={50} />
+              <div>
+                {profile && (
+                  <Typography variant="h6">{profile.username}</Typography>
+                )}
+                <Typography variant="caption" color="secondary">
+                  {user.email}
+                </Typography>
+              </div>
+            </div>
+            <Divider />
           </div>
-        </div>
-        <Divider />
+        )}
         {settings.map((setting, index) => (
           <MenuItem key={index} onClick={() => goTo(setting.url)}>
             <ListItemText>{setting.name}</ListItemText>

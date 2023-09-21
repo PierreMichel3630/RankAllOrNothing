@@ -264,6 +264,13 @@
     "updateusernamesuccess": "Votre modification de nom d'utilisateur à été pris en compte.",
     "sendfriendrequest": "Votre demande d'ami a été envoyé.",
     "validatefriendrequest": "Demande d'ami validée.",
+    "refusefriendrequest": "Demande d'ami refusée.",
     "updateemailsuccess": "Votre modification d'addresse mail est en cours. Veuillez confirmer sur votre ancien et nouveau email."
+  },
+  "notification": {
+    "FRIENDREQUEST": {
+      "title": "Demande d'amis",
+      "text": "{{username}} vous demande en amis"
+    }
   }
 }

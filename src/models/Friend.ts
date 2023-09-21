@@ -4,7 +4,7 @@ export interface Friend {
   id: string;
   user1: Profile;
   user2: Profile;
-  isvalid: boolean;
+  status: FRIENDSTATUS;
   created_at: Date;
 }
 
@@ -15,5 +15,11 @@ export interface FriendInsert {
 
 export interface FriendUpdate {
   id: string;
-  isvalid: boolean;
+  status: FRIENDSTATUS;
+}
+
+export enum FRIENDSTATUS {
+  PROGRESS = "PROGRESS",
+  VALID = "VALID",
+  REFUSE = "REFUSE",
 }

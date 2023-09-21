@@ -17,7 +17,7 @@ import * as Yup from "yup";
 import { MessageSnackbar } from "../commun/Snackbar";
 import {
   calculationRank,
-  countRanksByTheme,
+  countRanksByThemeAndType,
   insertRank,
   updateRank,
 } from "src/api/supabase/rank";
@@ -113,7 +113,7 @@ export const RankForm = ({ idTheme, idValue, validate, rank }: Props) => {
   }, [formik.values.notation]);
 
   const getMax = async () => {
-    const res = await countRanksByTheme(
+    const res = await countRanksByThemeAndType(
       Number(idTheme),
       rank ? rank.type : null
     );

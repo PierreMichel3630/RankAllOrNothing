@@ -154,3 +154,37 @@ export const CardFriendSkeleton = () => (
     </CardContent>
   </Card>
 );
+
+export const NotificationSkeleton = () => (
+  <Grid
+    container
+    justifyContent="space-between"
+    flexDirection="row"
+    alignItems="center"
+    spacing={2}
+    sx={{ p: 2 }}
+  >
+    <Grid item>
+      <Skeleton variant="circular" width={45} height={45} />
+    </Grid>
+    <Grid item>
+      <Skeleton width={80} height={20} />
+      <Skeleton width={150} height={15} />
+    </Grid>
+  </Grid>
+);
+
+export const BadgeAccountSkeleton = () => (
+  <Grid container spacing={2} alignItems="center" sx={{ ml: px(2) }}>
+    <Grid item>
+      <Skeleton
+        width={50}
+        height={20}
+        sx={{ display: { xs: "none", md: "flex" } }}
+      />
+    </Grid>
+    <Grid item>
+      <Skeleton variant="circular" width={30} height={30} />
+    </Grid>
+  </Grid>
+);

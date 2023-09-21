@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { selectFriend } from "src/api/supabase/friend";
 import { CardProfile } from "src/components/card/CardProfile";
 import { useAuth } from "src/context/AuthProviderSupabase";
-import { Friend } from "src/models/Friend";
+import { FRIENDSTATUS, Friend } from "src/models/Friend";
 import { Profile } from "src/models/Profile";
 
 export const MyFriendsPage = () => {
@@ -14,7 +14,7 @@ export const MyFriendsPage = () => {
 
   const getFriends = async () => {
     if (user !== null) {
-      const { data } = await selectFriend(true);
+      const { data } = await selectFriend(FRIENDSTATUS.VALID);
       const friends = data as Array<Friend>;
       const profiles = friends.map((el) =>
         el.user1.id === user.id ? el.user2 : el.user1

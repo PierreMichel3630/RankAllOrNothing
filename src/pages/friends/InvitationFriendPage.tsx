@@ -1,11 +1,7 @@
 import { Alert, AlertColor, Divider, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  deleteFriend,
-  selectFriend,
-  updateFriend,
-} from "src/api/supabase/friend";
+import { selectFriend, updateFriend } from "src/api/supabase/friend";
 import {
   CardInvitationFriend,
   CardRequestFriend,
@@ -13,7 +9,7 @@ import {
 import { MessageSnackbar } from "src/components/commun/Snackbar";
 import { CardFriendSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { useAuth } from "src/context/AuthProviderSupabase";
-import { Friend, FriendUpdate } from "src/models/Friend";
+import { FRIENDSTATUS, Friend, FriendUpdate } from "src/models/Friend";
 
 export const InvitationFriendPage = () => {
   const LOADINGITEM = 3;
@@ -27,7 +23,7 @@ export const InvitationFriendPage = () => {
   const [severity, setSeverity] = useState<AlertColor>("error");
 
   const getFriends = async () => {
-    const { data } = await selectFriend(false);
+    const { data } = await selectFriend(FRIENDSTATUS.PROGRESS);
     setFriends(data as Array<Friend>);
     setIsLoading(false);
   };
@@ -37,10 +33,10 @@ export const InvitationFriendPage = () => {
     getFriends();
   }, []);
 
-  const validateFriend = async (friend: Friend) => {
+  const confirmFriend = async (friend: Friend, status: FRIENDSTATUS) => {
     const value: FriendUpdate = {
       id: friend.id,
-      isvalid: true,
+      status: status,
     };
     const { error } = await updateFriend(value);
     if (error) {
@@ -49,19 +45,11 @@ export const InvitationFriendPage = () => {
     } else {
       setFriends((prev) => [...prev].filter((el) => el.id !== friend.id));
       setSeverity("success");
-      setMessage(t("alert.validatefriendrequest"));
-    }
-  };
-
-  const refuseFriend = async (friend: Friend) => {
-    const { error } = await deleteFriend(friend.id);
-    if (error) {
-      setSeverity("error");
-      setMessage(t("commun.error"));
-    } else {
-      setFriends((prev) => [...prev].filter((el) => el.id !== friend.id));
-      setSeverity("success");
-      setMessage(t("alert.validatefriendrequest"));
+      setMessage(
+        status === FRIENDSTATUS.VALID
+          ? t("alert.validatefriendrequest")
+          : t("alert.refusefriendrequest")
+      );
     }
   };
 
@@ -89,8 +77,8 @@ export const InvitationFriendPage = () => {
           <Grid item xs={12} key={invitation.id}>
             <CardInvitationFriend
               friend={invitation}
-              validate={() => validateFriend(invitation)}
-              refuse={() => refuseFriend(invitation)}
+              validate={() => confirmFriend(invitation, FRIENDSTATUS.VALID)}
+              refuse={() => confirmFriend(invitation, FRIENDSTATUS.REFUSE)}
             />
           </Grid>
         ))

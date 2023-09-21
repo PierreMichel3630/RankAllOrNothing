@@ -15,9 +15,16 @@ interface Props {
   close: () => void;
   rank: RankDetail;
   validate: () => void;
+  idTheme: number;
 }
 
-export const RankDetailDialog = ({ open, validate, close, rank }: Props) => {
+export const RankDetailDialog = ({
+  open,
+  validate,
+  close,
+  rank,
+  idTheme,
+}: Props) => {
   return (
     <Dialog onClose={close} open={open}>
       <DialogContent>
@@ -36,7 +43,12 @@ export const RankDetailDialog = ({ open, validate, close, rank }: Props) => {
             <Typography variant="body1">{rank.description}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <RankForm validate={validate} idvalue={rank.idvalue} rank={rank} />
+            <RankForm
+              validate={validate}
+              idValue={rank.idvalue}
+              rank={rank}
+              idTheme={idTheme}
+            />
           </Grid>
         </Grid>
       </DialogContent>

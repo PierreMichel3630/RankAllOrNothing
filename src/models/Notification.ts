@@ -1,5 +1,9 @@
 export interface Notification {
-  title: string;
-  text: string;
-  icon?: JSX.Element;
+  type: TYPENOTIFICATION;
+  isread: boolean;
+  extra: any;
+}
+
+enum TYPENOTIFICATION {
+  FRIENDREQUEST,
 }

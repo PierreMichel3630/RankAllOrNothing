@@ -21,12 +21,20 @@ export const countRanksByTheme = (idTheme: number) => {
     .eq("theme", idTheme);
 };
 
-export const countRanksByThemeAndType = (idTheme: number, type: string) => {
-  return supabase
-    .from(SUPABASE_RANK_TABLE)
-    .select("*", { count: "exact", head: true })
-    .eq("theme", idTheme)
-    .eq("type", type);
+export const countRanksByThemeAndType = (
+  idTheme: number,
+  type: string | null
+) => {
+  return type !== null
+    ? supabase
+        .from(SUPABASE_RANK_TABLE)
+        .select("*", { count: "exact", head: true })
+        .eq("theme", idTheme)
+        .eq("type", type)
+    : supabase
+        .from(SUPABASE_RANK_TABLE)
+        .select("*", { count: "exact", head: true })
+        .eq("theme", idTheme);
 };
 
 export const getRanksByTheme = (idTheme: number) => {

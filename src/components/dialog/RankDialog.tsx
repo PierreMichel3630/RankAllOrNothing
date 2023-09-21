@@ -50,7 +50,12 @@ export const RankDialog = ({ open, validate, close, value, ranks }: Props) => {
             <Typography variant="body1">{description}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <RankForm validate={validate} idvalue={value.id} rank={rank} />
+            <RankForm
+              idTheme={value.theme}
+              validate={validate}
+              idValue={value.id}
+              rank={rank}
+            />
           </Grid>
         </Grid>
       </DialogContent>

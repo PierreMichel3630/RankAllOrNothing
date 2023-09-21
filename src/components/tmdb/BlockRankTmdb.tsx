@@ -13,7 +13,7 @@ import { MediaType } from "src/models/tmdb/enum";
 import { THEMETMDB } from "src/routes/movieRoutes";
 import { CardSkeleton } from "../commun/skeleton/Skeleton";
 import { MessageSnackbar } from "../commun/Snackbar";
-import { CardRankTmdb } from "../commun/Card";
+import { CardRankTmdb, CardRankTmdbProfile } from "../commun/Card";
 import { ItemToRank } from "src/pages/tmdb/HomeMoviesPage";
 import { RankTMDBDialog } from "../dialog/RankTMDBDialog";
 import {
@@ -32,6 +32,7 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import { sortByRank } from "src/utils/sort";
+import { Profile } from "src/models/Profile";
 
 export const BlockRankTmdb = () => {
   const ITEMPERPAGE = 20;
@@ -201,6 +202,104 @@ export const BlockRankTmdb = () => {
         handleClose={() => setMessage("")}
         message={message}
       />
+    </Grid>
+  );
+};
+
+interface PropsRankTmdbProfileBlock {
+  profile: Profile;
+}
+
+export const RankTmdbProfileBlock = ({
+  profile,
+}: PropsRankTmdbProfileBlock) => {
+  const ITEMPERPAGE = 20;
+
+  const { t } = useTranslation();
+  const { language } = useContext(UserContext);
+
+  const [filter, setFilter] = useState<MediaType>(MediaType.movie);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [ranks, setRanks] = useState<Array<RankDetail>>([]);
+
+  const selectFilter = (value: MediaType) => {
+    setFilter(value);
+  };
+
+  const getAllRanks = async () => {
+    if (language) {
+      const { data } = await getRanksByUserAndThemeAndType(
+        THEMETMDB,
+        profile.id,
+        filter.toString()
+      );
+      if (data) {
+        const newRanks = data as Array<RankDetail>;
+        setRanks(newRanks.sort(sortByRank));
+        setIsLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    getAllRanks();
+  }, [profile, language, filter]);
+
+  return (
+    <Grid container spacing={1}>
+      <Grid item xs={12}>
+        <Grid container spacing={2} alignItems="center" justifyContent="center">
+          <Grid item>
+            <Chip
+              label={t("commun.movies")}
+              variant={
+                filter && filter === MediaType.movie ? "filled" : "outlined"
+              }
+              onClick={() => selectFilter(MediaType.movie)}
+            />
+          </Grid>
+          <Grid item>
+            <Chip
+              label={t("commun.series")}
+              variant={
+                filter && filter === MediaType.tv ? "filled" : "outlined"
+              }
+              onClick={() => selectFilter(MediaType.tv)}
+            />
+          </Grid>
+          <Grid item>
+            <Chip
+              label={t("commun.persons")}
+              variant={
+                filter && filter === MediaType.person ? "filled" : "outlined"
+              }
+              onClick={() => selectFilter(MediaType.person)}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+      {isLoading ? (
+        Array.from(new Array(ITEMPERPAGE)).map((_, index) => (
+          <Grid key={index} item xs={12} sm={6} md={4} lg={3} xl={3}>
+            <CardSkeleton />
+          </Grid>
+        ))
+      ) : ranks.length > 0 ? (
+        <Grid item xs={12}>
+          <Grid container spacing={1}>
+            {ranks.map((rank, index) => (
+              <Grid key={rank.id} item xs={12} sm={6} md={4} lg={3} xl={3}>
+                <CardRankTmdbProfile rank={rank} index={index} />
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid item xs={12} sx={{ marginTop: 2 }}>
+          <Alert severity="warning">{t("commun.noresult")}</Alert>
+        </Grid>
+      )}
     </Grid>
   );
 };

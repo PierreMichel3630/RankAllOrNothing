@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { UserContext } from "src/App";
 import { deleteRank, getRankByUser, updateRank } from "src/api/supabase/rank";
-import { CardRank } from "src/components/commun/Card";
+import { CardRank, CardRankBasic } from "src/components/commun/Card";
 import { MessageSnackbar } from "src/components/commun/Snackbar";
 import { CardSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { RankDetailDialog } from "src/components/dialog/RankDetailDialog";
@@ -27,6 +27,7 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import { Navigate } from "react-router-dom";
+import { Profile } from "src/models/Profile";
 
 interface Props {
   theme: ThemeView;
@@ -148,6 +149,7 @@ export const RankBlock = ({ theme }: Props) => {
               close={closeModalRank}
               rank={rank}
               validate={refreshRank}
+              idTheme={theme.id}
             />
           )}
         </Grid>
@@ -155,5 +157,57 @@ export const RankBlock = ({ theme }: Props) => {
     </DndContext>
   ) : (
     <Navigate replace to="/login" />
+  );
+};
+
+interface PropsRankProfileBlock {
+  theme: ThemeView;
+  profile: Profile;
+}
+
+export const RankProfileBlock = ({ theme, profile }: PropsRankProfileBlock) => {
+  const ITEMPERPAGE = 20;
+
+  const { t } = useTranslation();
+  const { language } = useContext(UserContext);
+  const { user } = useAuth();
+  const [ranks, setRanks] = useState<Array<RankDetail>>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const getAllRanks = async () => {
+    if (user && theme && language) {
+      const { data } = await getRankByUser(profile.id, theme.id, language.id);
+      if (data) {
+        setRanks(data as Array<RankDetail>);
+        setIsLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    getAllRanks();
+  }, [user, theme, language]);
+
+  return (
+    <Grid container spacing={1}>
+      {isLoading ? (
+        Array.from(new Array(ITEMPERPAGE)).map((_, index) => (
+          <Grid key={index} item xs={6} sm={6} md={4} lg={3} xl={3}>
+            <CardSkeleton />
+          </Grid>
+        ))
+      ) : ranks.length > 0 ? (
+        ranks.map((rank, index) => (
+          <Grid key={rank.id} item xs={6} sm={6} md={4} lg={3} xl={3}>
+            <CardRankBasic index={index} rank={rank} />
+          </Grid>
+        ))
+      ) : (
+        <Grid item xs={12} sx={{ marginTop: 2 }}>
+          <Alert severity="warning">{t("commun.noresult")}</Alert>
+        </Grid>
+      )}
+    </Grid>
   );
 };

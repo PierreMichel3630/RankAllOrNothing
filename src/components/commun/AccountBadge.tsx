@@ -6,6 +6,7 @@ import { Colors } from "src/style/Colors";
 import { style } from "typestyle";
 import { AvatarAccount } from "../avatar/AvatarAccount";
 import { BadgeAccountActive } from "./Badge";
+import { BadgeAccountSkeleton } from "./skeleton/Skeleton";
 
 const divCss = style({
   display: "flex",
@@ -27,7 +28,8 @@ interface Props {
 export const AccountBadge = ({ onClick }: Props) => {
   const { t } = useTranslation();
   const { profile } = useAuth();
-  return (
+
+  return profile ? (
     <div onClick={onClick} className={divCss}>
       <Typography
         component="small"
@@ -38,18 +40,16 @@ export const AccountBadge = ({ onClick }: Props) => {
       >
         {t("header.account.hi")}
       </Typography>
-      {profile && (
-        <Typography
-          component="small"
-          variant="caption"
-          sx={{ display: { xs: "none", md: "flex" }, fontWeight: 700 }}
-          ml={0.5}
-          mr={1}
-          color="secondary"
-        >
-          {profile.username}
-        </Typography>
-      )}
+      <Typography
+        component="small"
+        variant="caption"
+        sx={{ display: { xs: "none", md: "flex" }, fontWeight: 700 }}
+        ml={0.5}
+        mr={1}
+        color="secondary"
+      >
+        {profile.username}
+      </Typography>
       <BadgeAccountActive
         anchorOrigin={{
           vertical: "bottom",
@@ -58,8 +58,12 @@ export const AccountBadge = ({ onClick }: Props) => {
         overlap="circular"
         variant="dot"
       >
-        <AvatarAccount avatar={profile ? profile.avatar : "1"} />
+        <AvatarAccount avatar={profile.avatar} />
       </BadgeAccountActive>
+    </div>
+  ) : (
+    <div className={divCss}>
+      <BadgeAccountSkeleton />
     </div>
   );
 };

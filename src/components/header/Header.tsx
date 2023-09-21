@@ -43,7 +43,7 @@ export const Header = () => {
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
             <ModeMenu />
             <LanguagesMenu />
-            <NotificationsMenu />
+            {user && <NotificationsMenu />}
             {user ? (
               <AccountMenu user={user} />
             ) : (
