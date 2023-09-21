@@ -1,12 +1,11 @@
-import { Avatar, Typography } from "@mui/material";
-import { BadgeAccountActive } from "./Badge";
+import { Typography } from "@mui/material";
 import { border } from "csx";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "src/context/AuthProviderSupabase";
 import { Colors } from "src/style/Colors";
 import { style } from "typestyle";
-import { useTranslation } from "react-i18next";
-import { User } from "@supabase/supabase-js";
-import { AvatarAccount } from "./Avatar";
-import { useAuth } from "src/context/AuthProviderSupabase";
+import { AvatarAccount } from "../avatar/AvatarAccount";
+import { BadgeAccountActive } from "./Badge";
 
 const divCss = style({
   display: "flex",
@@ -23,10 +22,9 @@ const divCss = style({
 });
 
 interface Props {
-  user: User;
   onClick: (event: any) => void;
 }
-export const AccountBadge = ({ user, onClick }: Props) => {
+export const AccountBadge = ({ onClick }: Props) => {
   const { t } = useTranslation();
   const { profile } = useAuth();
   return (
@@ -60,7 +58,7 @@ export const AccountBadge = ({ user, onClick }: Props) => {
         overlap="circular"
         variant="dot"
       >
-        <AvatarAccount size={28} picture={profile ? profile.avatar : "1"} />
+        <AvatarAccount avatar={profile ? profile.avatar : "1"} />
       </BadgeAccountActive>
     </div>
   );

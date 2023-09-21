@@ -30,33 +30,3 @@ export const AvatarGroupFlag = ({ ids }: PropsAvatarGroupFlag) => {
     </AvatarGroup>
   );
 };
-
-interface AvatarAccountProps {
-  picture: string;
-  size?: number;
-}
-
-export const AvatarAccount = ({ picture, size }: AvatarAccountProps) => {
-  const DEFAULT_SIZE = 35;
-
-  const getPicture = () => {
-    let src = "/src/assets/man-avatar.svg";
-    if (picture === "1") {
-      src = "/src/assets/man-avatar.svg";
-    } else {
-      src = picture;
-    }
-    return src;
-  };
-
-  return (
-    <Avatar
-      alt="Avatar"
-      src={getPicture()}
-      sx={{
-        width: size ? size : DEFAULT_SIZE,
-        height: size ? size : DEFAULT_SIZE,
-      }}
-    />
-  );
-};

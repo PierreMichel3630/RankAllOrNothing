@@ -129,3 +129,28 @@ export const CardSkeleton = () => (
     </CardContent>
   </Card>
 );
+
+export const CardFriendSkeleton = () => (
+  <Card>
+    <CardContent>
+      <Grid
+        container
+        justifyContent="space-between"
+        flexDirection="row"
+        alignItems="center"
+      >
+        <Grid item>
+          <Skeleton variant="circular" width={80} height={80} />
+        </Grid>
+        <Grid item>
+          <Skeleton width={150} height={15} />
+          <Skeleton width={80} height={15} />
+        </Grid>
+        <Grid item>
+          <Skeleton width={110} height={15} />
+          <Skeleton width={65} height={15} />
+        </Grid>
+      </Grid>
+    </CardContent>
+  </Card>
+);

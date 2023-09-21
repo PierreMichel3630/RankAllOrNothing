@@ -16,12 +16,14 @@ import { updateProfil } from "src/api/supabase/profile";
 import { MessageSnackbar } from "src/components/commun/Snackbar";
 import { Profile } from "src/models/Profile";
 import { updateUser } from "src/api/supabase/user";
+import { AvatarSelector } from "src/components/avatar/AvatarSelector";
 
 export const ParameterPage = () => {
   const { t } = useTranslation();
   const { user, profile, setProfile } = useAuth();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [avatar, setAvatar] = useState<string | null>(null);
 
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState<AlertColor>("error");
@@ -73,6 +75,30 @@ export const ParameterPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (profile) {
+      setAvatar(profile.avatar);
+    }
+  }, [profile]);
+
+  const changeAvatar = async (value: string | null) => {
+    if (user) {
+      const newProfil = { id: user.id, avatar: value };
+      const { data, error } = await updateProfil(newProfil);
+      if (error) {
+        setSeverity("error");
+        setMessage(t("commun.error"));
+      } else {
+        setSeverity("success");
+        setMessage(t("alert.updateavatarsuccess"));
+        setProfile(data as Profile);
+      }
+    } else {
+      setSeverity("error");
+      setMessage(t("commun.error"));
+    }
+  };
+
   return (
     <Container maxWidth="md">
       <Grid container spacing={3}>
@@ -102,6 +128,16 @@ export const ParameterPage = () => {
               >
                 {t("commun.validate")}
               </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container spacing={1} alignItems="center">
+            <Grid item xs={12} md={4}>
+              <Typography variant="h4">{t("commun.avatar")}</Typography>
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <AvatarSelector selected={avatar} onSelect={changeAvatar} />
             </Grid>
           </Grid>
         </Grid>

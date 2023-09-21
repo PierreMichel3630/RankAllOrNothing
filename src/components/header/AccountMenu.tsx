@@ -16,8 +16,8 @@ import { useTranslation } from "react-i18next";
 import { User } from "@supabase/supabase-js";
 import { useAuth } from "src/context/AuthProviderSupabase";
 import { useNavigate } from "react-router-dom";
-import { AvatarAccount } from "../commun/Avatar";
 import { px } from "csx";
+import { AvatarAccount } from "../avatar/AvatarAccount";
 
 const divCss = style({
   display: "flex",
@@ -45,6 +45,10 @@ export const AccountMenu = ({ user }: Props) => {
     {
       name: t("header.account.ranking"),
       url: "/rank",
+    },
+    {
+      name: t("header.account.friends"),
+      url: "/friends",
     },
     {
       name: t("header.account.parameter"),
@@ -75,7 +79,7 @@ export const AccountMenu = ({ user }: Props) => {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <AccountBadge user={user} onClick={handleOpenUserMenu} />
+      <AccountBadge onClick={handleOpenUserMenu} />
       <Menu
         sx={{ mt: "45px" }}
         id="menu-appbar"
@@ -93,7 +97,7 @@ export const AccountMenu = ({ user }: Props) => {
         onClose={handleCloseUserMenu}
       >
         <div className={divCss}>
-          <AvatarAccount picture={profile ? profile.avatar : "1"} />
+          <AvatarAccount avatar={profile ? profile.avatar : "1"} />
           <div>
             {profile && (
               <Typography variant="h6">{profile.username}</Typography>
