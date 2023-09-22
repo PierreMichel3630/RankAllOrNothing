@@ -8,7 +8,7 @@ import { getAllThemes } from "src/api/supabase/theme";
 import { RankBlock } from "src/components/RankBlock";
 import { ThemeAutocomplete } from "src/components/input/ThemeAutocomplete";
 import { BlockRankTmdb } from "src/components/tmdb/BlockRankTmdb";
-import { ThemeView } from "src/models/Theme";
+import { Theme } from "src/models/Theme";
 import { THEMETMDB } from "src/routes/movieRoutes";
 import { useQuery } from "src/utils/hook";
 
@@ -18,8 +18,8 @@ export const RankPage = () => {
   const { t } = useTranslation();
   const { language } = useContext(UserContext);
 
-  const [theme, setTheme] = useState<ThemeView | undefined>(undefined);
-  const [themes, setThemes] = useState<Array<ThemeView>>([]);
+  const [theme, setTheme] = useState<Theme | undefined>(undefined);
+  const [themes, setThemes] = useState<Array<Theme>>([]);
 
   const params = useQuery();
   const idTheme = params.has("theme")
@@ -28,7 +28,7 @@ export const RankPage = () => {
 
   const getThemes = async () => {
     const { data } = await getAllThemes();
-    const datas = data as Array<ThemeView>;
+    const datas = data as Array<Theme>;
     setThemes(datas);
     if (idTheme) {
       const selectTheme = datas.find((el) => el.id === Number(idTheme));

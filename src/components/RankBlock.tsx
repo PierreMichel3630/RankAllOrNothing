@@ -9,7 +9,7 @@ import { CardSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { RankDetailDialog } from "src/components/dialog/RankDetailDialog";
 import { useAuth } from "src/context/AuthProviderSupabase";
 import { RankDetail } from "src/models/Rank";
-import { ThemeView } from "src/models/Theme";
+import { Theme } from "src/models/Theme";
 
 import {
   DndContext,
@@ -30,7 +30,7 @@ import { Navigate } from "react-router-dom";
 import { Profile } from "src/models/Profile";
 
 interface Props {
-  theme: ThemeView;
+  theme: Theme;
 }
 export const RankBlock = ({ theme }: Props) => {
   const ITEMPERPAGE = 20;
@@ -161,7 +161,7 @@ export const RankBlock = ({ theme }: Props) => {
 };
 
 interface PropsRankProfileBlock {
-  theme: ThemeView;
+  theme: Theme;
   profile: Profile;
 }
 

@@ -15,7 +15,7 @@ import { BasicSearchInput } from "src/components/commun/Input";
 import { CardSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { CreateValueDialog } from "src/components/dialog/CreateValueDialog";
 import { Rank } from "src/models/Rank";
-import { ThemeView } from "src/models/Theme";
+import { Theme } from "src/models/Theme";
 import { ValueView } from "src/models/Value";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -28,7 +28,7 @@ import { CompletedBadge } from "../commun/CompletedBadge";
 import { useAuth } from "src/context/AuthProviderSupabase";
 
 interface Props {
-  theme: ThemeView;
+  theme: Theme;
 }
 export const BlockThemeOverview = ({ theme }: Props) => {
   const ITEMPERPAGE = 20;

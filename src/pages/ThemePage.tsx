@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { getThemeById } from "src/api/supabase/theme";
-import { ThemeView } from "src/models/Theme";
+import { Theme } from "src/models/Theme";
 import { TitleTheme } from "src/components/commun/Title";
 import { BlockThemeOverview } from "src/components/theme/BlockThemeOverview";
 import { RankBlock } from "src/components/RankBlock";
@@ -19,12 +19,12 @@ export const ThemePage = () => {
     setTab(newValue);
   };
 
-  const [theme, setTheme] = useState<ThemeView | undefined>(undefined);
+  const [theme, setTheme] = useState<Theme | undefined>(undefined);
 
   const getTheme = async () => {
     if (id) {
       const { data } = await getThemeById(Number(id));
-      setTheme(data as ThemeView);
+      setTheme(data as Theme);
     }
   };
 

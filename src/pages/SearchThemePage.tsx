@@ -1,30 +1,20 @@
-import {
-  Alert,
-  Button,
-  Container,
-  Grid,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { BasicSearchInput } from "src/components/commun/Input";
+import { Alert, Button, Container, Grid, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { UserContext } from "src/App";
 import { getThemes } from "src/api/supabase/theme";
 import { CardTheme } from "src/components/commun/Card";
-import { UserContext } from "src/App";
-import { ThemeView } from "src/models/Theme";
+import { BasicSearchInput } from "src/components/commun/Input";
 import { CardSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { CreateThemeDialog } from "src/components/dialog/CreateThemeDialog";
-
-import AddIcon from "@mui/icons-material/Add";
+import { Theme } from "src/models/Theme";
 
 export const SearchThemePage = () => {
   const ITEMPERPAGE = 20;
   const { t } = useTranslation();
   const { language } = useContext(UserContext);
 
-  const [themes, setThemes] = useState<Array<ThemeView>>([]);
+  const [themes, setThemes] = useState<Array<Theme>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
 
@@ -33,7 +23,7 @@ export const SearchThemePage = () => {
   const searchTheme = async () => {
     if (language) {
       const { data } = await getThemes(search, language.iso);
-      setThemes(data as Array<ThemeView>);
+      setThemes(data as Array<Theme>);
       setIsLoading(false);
     }
   };

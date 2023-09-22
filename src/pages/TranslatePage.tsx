@@ -5,7 +5,7 @@ import { UserContext } from "src/App";
 import { getValuesByTheme } from "src/api/supabase/value";
 import { CardValueTranslate } from "src/components/commun/Card";
 import { CardSkeleton } from "src/components/commun/skeleton/Skeleton";
-import { ThemeView } from "src/models/Theme";
+import { Theme } from "src/models/Theme";
 import { useQuery } from "src/utils/hook";
 
 export const TranslatePage = () => {
@@ -15,7 +15,7 @@ export const TranslatePage = () => {
   const { language } = useContext(UserContext);
 
   const [search, setSearch] = useState("");
-  const [values, setValues] = useState<Array<ThemeView>>([]);
+  const [values, setValues] = useState<Array<Theme>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const params = useQuery();
@@ -31,7 +31,7 @@ export const TranslatePage = () => {
         language.iso
       );
       if (data) {
-        setValues(data as Array<ThemeView>);
+        setValues(data as Array<Theme>);
         setIsLoading(false);
       }
     }

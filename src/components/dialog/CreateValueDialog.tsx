@@ -1,12 +1,12 @@
 import { Dialog, DialogContent, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ValueForm } from "../form/ValueForm";
-import { ThemeView } from "src/models/Theme";
+import { Theme } from "src/models/Theme";
 
 interface Props {
   open: boolean;
   close: () => void;
-  theme: ThemeView;
+  theme: Theme;
   validate: () => void;
 }
 

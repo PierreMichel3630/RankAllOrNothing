@@ -21,7 +21,7 @@ import { EpisodeDetail } from "src/models/tmdb/tv/EpisodeDetail";
 import { TvAggregateCreditCast } from "src/models/tmdb/tv/TvAggregateCreditCast";
 import { useTranslation } from "react-i18next";
 import { GuestStar } from "src/models/tmdb/commun/GuestStar";
-import { ThemeView } from "src/models/Theme";
+import { Theme } from "src/models/Theme";
 import {
   BUCKET_THEME,
   BUCKET_VALUE,
@@ -520,17 +520,21 @@ export const CardEpisode = ({ value }: PropsEpisode) => {
 };
 
 interface PropsCardTheme {
-  value: ThemeView;
+  value: Theme;
 }
 
 export const CardTheme = ({ value }: PropsCardTheme) => {
   const { language } = useContext(UserContext);
-  const { t } = useTranslation();
 
-  const tradLocalLanguage = value.trads.find((el) => el.iso === language.iso);
-  const tradEnglish = value.trads.find((el) => el.iso === DEFAULT_ISO_LANGUAGE);
+  const nameLocalLanguage = value.name[language.iso];
+  const nameEnglish = value.name[DEFAULT_ISO_LANGUAGE];
+  const name = nameLocalLanguage ? nameLocalLanguage : nameEnglish;
 
-  const trad = tradLocalLanguage ? tradLocalLanguage : tradEnglish;
+  const descriptionLocalLanguage = value.description[language.iso];
+  const descriptionEnglish = value.description[DEFAULT_ISO_LANGUAGE];
+  const description = descriptionLocalLanguage
+    ? descriptionLocalLanguage
+    : descriptionEnglish;
 
   return (
     <Link to={`/theme/${value.id}`}>
@@ -542,40 +546,33 @@ export const CardTheme = ({ value }: PropsCardTheme) => {
             minHeight: px(250),
           }}
           image={getUrlPublic(BUCKET_THEME, value.image)}
-          title={trad ? trad.name : ""}
+          title={name}
         />
         <CardContent sx={{ position: "relative" }}>
-          {trad && (
-            <>
-              <div
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  transform: "translate(0%,-50%)",
-                }}
-              >
-                <AvatarGroupFlag ids={value.languages} />
-              </div>
-              <Typography variant="h4">{trad.name}</Typography>
-              <Typography
-                variant="body1"
-                sx={{
-                  display: "-webkit-box",
-                  overflow: "hidden",
-                  WebkitBoxOrient: "vertical",
-                  WebkitLineClamp: 3,
-                }}
-              >
-                {trad.description}
-              </Typography>
-            </>
-          )}
-          {tradLocalLanguage === undefined && (
-            <Alert severity="info" variant="outlined" sx={{ mt: 1 }}>
-              {t("commun.notavailableinyourlanguage")}
-            </Alert>
-          )}
+          <>
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                transform: "translate(0%,-50%)",
+              }}
+            >
+              <AvatarGroupFlag json={value.name} />
+            </div>
+            <Typography variant="h4">{name}</Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                display: "-webkit-box",
+                overflow: "hidden",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 3,
+              }}
+            >
+              {description}
+            </Typography>
+          </>
         </CardContent>
       </Card>
     </Link>

@@ -2,15 +2,18 @@ import { Avatar, AvatarGroup } from "@mui/material";
 import { useContext } from "react";
 import { UserContext } from "src/App";
 import { BUCKET_LANGUAGE, getUrlPublic } from "src/api/supabase/storage";
+import { JsonLanguage } from "src/models/Language";
 
 interface PropsAvatarGroupFlag {
-  ids?: Array<number>;
+  json: JsonLanguage;
 }
-export const AvatarGroupFlag = ({ ids }: PropsAvatarGroupFlag) => {
+export const AvatarGroupFlag = ({ json }: PropsAvatarGroupFlag) => {
   const { languages } = useContext(UserContext);
-  const filterLanguages = ids
-    ? [...languages].filter((el) => ids.includes(el.id))
-    : [...languages];
+  const isoLanguages = Object.getOwnPropertyNames(json);
+
+  const filterLanguages = [...languages].filter((el) =>
+    isoLanguages.includes(el.iso)
+  );
 
   return (
     <AvatarGroup

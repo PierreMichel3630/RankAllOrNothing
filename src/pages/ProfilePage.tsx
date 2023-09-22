@@ -11,7 +11,7 @@ import { AvatarAccount } from "src/components/avatar/AvatarAccount";
 import { ThemeAutocomplete } from "src/components/input/ThemeAutocomplete";
 import { RankTmdbProfileBlock } from "src/components/tmdb/BlockRankTmdb";
 import { Profile } from "src/models/Profile";
-import { ThemeView } from "src/models/Theme";
+import { Theme } from "src/models/Theme";
 import { THEMETMDB } from "src/routes/movieRoutes";
 
 export const ProfilePage = () => {
@@ -22,8 +22,8 @@ export const ProfilePage = () => {
   const [profile, setProfile] = useState<null | Profile>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [theme, setTheme] = useState<ThemeView | undefined>(undefined);
-  const [themes, setThemes] = useState<Array<ThemeView>>([]);
+  const [theme, setTheme] = useState<Theme | undefined>(undefined);
+  const [themes, setThemes] = useState<Array<Theme>>([]);
 
   const getProfile = async () => {
     if (id) {
@@ -40,7 +40,7 @@ export const ProfilePage = () => {
 
   const getThemes = async () => {
     const { data } = await getAllThemes();
-    const datas = data as Array<ThemeView>;
+    const datas = data as Array<Theme>;
     setThemes(datas);
     setTheme(datas[0]);
   };

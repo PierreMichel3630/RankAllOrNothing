@@ -1,4 +1,3 @@
-import { useContext, useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -8,28 +7,20 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
-import * as Yup from "yup";
 import { useFormik } from "formik";
-import { MessageSnackbar } from "../commun/Snackbar";
-import { LanguageInput } from "../input/LanguageInput";
-import { FileUploadInput } from "../input/FileUploadInput";
-import {
-  getThemesByName,
-  insertTheme,
-  insertTranslateTheme,
-} from "src/api/supabase/theme";
-import {
-  Theme,
-  ThemeInsert,
-  TranslateTheme,
-  TranslateThemeInsert,
-} from "src/models/Theme";
-import { BUCKET_THEME, storeFile } from "src/api/supabase/storage";
-import { Language } from "src/models/Language";
+import { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "src/App";
 import { DEFAULT_ISO_LANGUAGE } from "src/api/supabase/language";
+import { BUCKET_THEME, storeFile } from "src/api/supabase/storage";
+import { getThemes, insertTheme } from "src/api/supabase/theme";
+import { Language } from "src/models/Language";
+import { Theme } from "src/models/Theme";
+import * as Yup from "yup";
+import { MessageSnackbar } from "../commun/Snackbar";
+import { FileUploadInput } from "../input/FileUploadInput";
+import { LanguageInput } from "../input/LanguageInput";
 
 export const ThemeForm = () => {
   const { t } = useTranslation();
@@ -37,7 +28,7 @@ export const ThemeForm = () => {
   const { language } = useContext(UserContext);
 
   const [message, setMessage] = useState("");
-  const [englishThemes, setEnglishThemes] = useState<Array<TranslateTheme>>([]);
+  const [englishThemes, setEnglishThemes] = useState<Array<Theme>>([]);
 
   const initialValue: {
     name: string;
@@ -75,9 +66,9 @@ export const ThemeForm = () => {
     description: Yup.string(),
   });
 
-  const addTheme = async (theme: ThemeInsert) => {
-    const { data } = await insertTheme(theme);
-    return data as Theme;
+  const uploadFile = async (bucket: string, name: string, file: File) => {
+    const { data } = await storeFile(bucket, name, file);
+    return data;
   };
 
   const formik = useFormik({
@@ -90,30 +81,26 @@ export const ThemeForm = () => {
             values.language.abbreviation !== "en"
               ? values.englishname
               : values.name; // ENGLISH NAME
-          const { data } = await storeFile(
+          const file = await uploadFile(
             BUCKET_THEME,
             name,
             values.image as unknown as File
           );
-          if (data !== null) {
-            const theme: Theme = await addTheme({
-              image: data.path,
+          if (file !== null) {
+            const { data, error } = await insertTheme({
+              image: file.path,
+              description: {
+                [values.language.iso]: values.description,
+              },
+              name: {
+                [values.language.iso]: values.name,
+                DEFAULT_ISO_LANGUAGE: values.englishname,
+              },
             });
-            if (theme) {
-              const translateTheme: TranslateThemeInsert = {
-                name: values.name,
-                description: values.description,
-                language: values.language.id,
-                theme: theme.id,
-              };
-              const { error } = await insertTranslateTheme(translateTheme);
-              if (error) {
-                setMessage(t("commun.error"));
-              } else {
-                navigate("/theme/" + theme.id);
-              }
-            } else {
+            if (error) {
               setMessage(t("commun.error"));
+            } else {
+              navigate("/theme/" + data.id);
             }
           } else {
             setMessage(t("commun.error"));
@@ -126,8 +113,8 @@ export const ThemeForm = () => {
   });
 
   const searchTheme = async (search: string) => {
-    const { data } = await getThemesByName(search, DEFAULT_ISO_LANGUAGE);
-    setEnglishThemes(data as Array<TranslateTheme>);
+    const { data } = await getThemes(search, DEFAULT_ISO_LANGUAGE);
+    setEnglishThemes(data as Array<Theme>);
   };
 
   useEffect(() => {

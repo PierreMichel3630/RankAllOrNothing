@@ -5,3 +5,7 @@ export interface Language {
   abbreviation: string;
   image: string;
 }
+
+export interface JsonLanguage {
+  [iso: string]: string;
+}
