@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, Grid, Typography } from "@mui/material";
 import { percent, px } from "csx";
 import { BUCKET_VALUE, getUrlPublic } from "src/api/supabase/storage";
-import { ValueView } from "src/models/Value";
+import { Value } from "src/models/Value";
 import { style } from "typestyle";
 import { RankForm } from "../form/RankForm";
 import { Rank } from "src/models/Rank";
@@ -17,7 +17,7 @@ const imageCss = style({
 interface Props {
   open: boolean;
   close: () => void;
-  value: ValueView;
+  value: Value;
   ranks: Array<Rank>;
   validate: () => void;
 }
@@ -25,13 +25,18 @@ interface Props {
 export const RankDialog = ({ open, validate, close, value, ranks }: Props) => {
   const { language } = useContext(UserContext);
 
-  const tradLocalLanguage = value.trads.find((el) => el.iso === language.iso);
-  const tradEnglish = value.trads.find((el) => el.iso === DEFAULT_ISO_LANGUAGE);
+  const nameLocalLanguage = value.name[language.iso];
+  const nameEnglish = value.name[DEFAULT_ISO_LANGUAGE];
+  const name = nameLocalLanguage ? nameLocalLanguage : nameEnglish;
 
-  const trad = tradLocalLanguage ? tradLocalLanguage : tradEnglish;
-  const name = trad ? trad.name : "---";
-  const description = trad ? trad.description : "---";
+  const descriptionLocalLanguage = value.description[language.iso];
+  const descriptionEnglish = value.description[DEFAULT_ISO_LANGUAGE];
+  const description = descriptionLocalLanguage
+    ? descriptionLocalLanguage
+    : descriptionEnglish;
+
   const rank = ranks.find((el) => value.id === el.value.id);
+
   return (
     <Dialog onClose={close} open={open}>
       <DialogContent>

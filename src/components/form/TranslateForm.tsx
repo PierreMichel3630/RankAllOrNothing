@@ -13,8 +13,6 @@ import { useFormik } from "formik";
 import { MessageSnackbar } from "../commun/Snackbar";
 import { LanguageInput } from "../input/LanguageInput";
 import { Language } from "src/models/Language";
-import { TranslateValueInsert } from "src/models/Value";
-import { insertTranslateValue } from "src/api/supabase/value";
 import { UserContext } from "src/App";
 
 interface Props {
@@ -50,7 +48,7 @@ export const TranslateForm = ({ idValue, validate }: Props) => {
     onSubmit: async (values) => {
       try {
         if (values.language !== null) {
-          const translateValue: TranslateValueInsert = {
+          /*const translateValue: TranslateValueInsert = {
             name: values.name,
             description: values.description,
             language: values.language.id,
@@ -61,7 +59,7 @@ export const TranslateForm = ({ idValue, validate }: Props) => {
             setMessage(t("commun.error"));
           } else {
             validate();
-          }
+          }*/
         } else {
           setMessage(t("commun.error"));
         }

@@ -1,4 +1,4 @@
-import { AlertColor, Grid } from "@mui/material";
+import { Alert, AlertColor, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { insertFriend, selectFriend } from "src/api/supabase/friend";
@@ -88,16 +88,23 @@ export const AddFriendPage = () => {
             value={search}
             clear={() => setSearch("")}
           />
+
+          {profiles.length > 0 ? (
+            profiles.map((profile) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={profile.id}>
+                <CardProfile
+                  profile={profile}
+                  addToFriend={() => addToFriend(profile)}
+                />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12}>
+              <Alert severity="warning">{t("commun.noresult")}</Alert>
+            </Grid>
+          )}
         </Grid>
       )}
-      {profiles.map((profile) => (
-        <Grid item xs={3} key={profile.id}>
-          <CardProfile
-            profile={profile}
-            addToFriend={() => addToFriend(profile)}
-          />
-        </Grid>
-      ))}
       <MessageSnackbar
         autoHideDuration={600000}
         open={message !== ""}

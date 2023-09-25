@@ -52,8 +52,7 @@ interface Props {
 
 export const HeaderMovie = ({ detail, videos, isLoading }: Props) => {
   const { t } = useTranslation();
-  const { setItemToRank, setItemToCheck, refresh, setRefresh } =
-    useContext(RankContext);
+  const { setItemToRank, setItemToCheck, refresh } = useContext(RankContext);
 
   const [open, setOpen] = useState(false);
   const [rank, setRank] = useState<null | Rank>(null);
@@ -77,7 +76,6 @@ export const HeaderMovie = ({ detail, videos, isLoading }: Props) => {
     if (refresh) {
       setIsLoadingRank(true);
       getRank();
-      setRefresh(false);
     }
   }, [refresh]);
 
@@ -182,7 +180,9 @@ export const HeaderMovie = ({ detail, videos, isLoading }: Props) => {
               </Grid>
               <Grid item xs={12} sx={{ display: "flex", gap: 2 }}>
                 <Tooltip title={t("commun.rankuser")}>
-                  <VoteBadge value={detail.vote_average} />
+                  <>
+                    <VoteBadge value={detail.vote_average} />
+                  </>
                 </Tooltip>
                 {!isLoadingRank && (
                   <>

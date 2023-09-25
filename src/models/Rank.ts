@@ -7,21 +7,8 @@ export interface Rank {
   value: Value;
   opinion: string;
   type: string | null;
-}
-
-export interface RankDetail {
-  id: number;
-  rank: number;
-  notation: number;
-  opinion: string;
-  idvalue: number;
-  image: string;
-  name: string;
-  description: string;
-  language: number;
-  type: string | null;
-  id_extern: string | null;
   theme: number;
+  id_extern: string | null;
 }
 
 export interface RankUpdate {

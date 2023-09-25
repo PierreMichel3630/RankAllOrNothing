@@ -12,7 +12,7 @@ import {
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Rank, RankDetail, RankInsert, RankUpdate } from "src/models/Rank";
+import { Rank, RankInsert, RankUpdate } from "src/models/Rank";
 import * as Yup from "yup";
 import { MessageSnackbar } from "../commun/Snackbar";
 import {
@@ -25,7 +25,7 @@ import {
 interface Props {
   idValue: number;
   validate: () => void;
-  rank?: Rank | RankDetail;
+  rank?: Rank;
   idTheme: number;
 }
 
@@ -103,7 +103,11 @@ export const RankForm = ({ idTheme, idValue, validate, rank }: Props) => {
   });
 
   const getCalculationRank = async () => {
-    const res = await calculationRank(idTheme, formik.values.notation);
+    const res = await calculationRank(
+      idTheme,
+      formik.values.notation,
+      undefined
+    );
     const newRank = res.count !== null ? res.count + 1 : 1;
     formik.setFieldValue("rank", newRank);
   };

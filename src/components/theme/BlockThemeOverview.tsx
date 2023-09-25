@@ -16,7 +16,7 @@ import { CardSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { CreateValueDialog } from "src/components/dialog/CreateValueDialog";
 import { Rank } from "src/models/Rank";
 import { Theme } from "src/models/Theme";
-import { ValueView } from "src/models/Value";
+import { Value } from "src/models/Value";
 
 import AddIcon from "@mui/icons-material/Add";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
@@ -40,8 +40,8 @@ export const BlockThemeOverview = ({ theme }: Props) => {
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [values, setValues] = useState<Array<ValueView>>([]);
-  const [value, setValue] = useState<ValueView | undefined>(undefined);
+  const [values, setValues] = useState<Array<Value>>([]);
+  const [value, setValue] = useState<Value | undefined>(undefined);
   const [ranks, setRanks] = useState<Array<Rank>>([]);
 
   const [total, setTotal] = useState<number | null>(null);
@@ -68,7 +68,7 @@ export const BlockThemeOverview = ({ theme }: Props) => {
 
   const searchAll = async () => {
     const { data } = await getValuesByTheme(theme.id, search, language.iso);
-    setValues(data as Array<ValueView>);
+    setValues(data as Array<Value>);
     setIsLoading(false);
   };
 
@@ -85,7 +85,7 @@ export const BlockThemeOverview = ({ theme }: Props) => {
     searchAll();
   };
 
-  const checkValue = async (value: ValueView) => {
+  const checkValue = async (value: Value) => {
     if (user !== null) {
       const { error } = await insertCheck({
         value: value.id,
@@ -117,7 +117,7 @@ export const BlockThemeOverview = ({ theme }: Props) => {
     }
   };
 
-  const rateValue = (value: ValueView) => {
+  const rateValue = (value: Value) => {
     if (user !== null) {
       setValue(value);
       setOpenModalRate(true);

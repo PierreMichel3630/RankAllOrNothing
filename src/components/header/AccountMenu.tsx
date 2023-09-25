@@ -15,7 +15,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useTranslation } from "react-i18next";
 import { User } from "@supabase/supabase-js";
 import { useAuth } from "src/context/AuthProviderSupabase";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { px } from "csx";
 import { AvatarAccount } from "../avatar/AvatarAccount";
 
@@ -97,7 +97,7 @@ export const AccountMenu = ({ user }: Props) => {
         onClose={handleCloseUserMenu}
       >
         {profile && (
-          <div>
+          <Link to={`/user/${profile.id}`}>
             <div className={divCss}>
               <AvatarAccount avatar={profile.avatar} size={50} />
               <div>
@@ -110,7 +110,7 @@ export const AccountMenu = ({ user }: Props) => {
               </div>
             </div>
             <Divider />
-          </div>
+          </Link>
         )}
         {settings.map((setting, index) => (
           <MenuItem key={index} onClick={() => goTo(setting.url)}>

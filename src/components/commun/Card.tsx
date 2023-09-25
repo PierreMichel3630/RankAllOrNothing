@@ -27,8 +27,8 @@ import {
   BUCKET_VALUE,
   getUrlPublic,
 } from "src/api/supabase/storage";
-import { ValueView } from "src/models/Value";
-import { Rank, RankDetail } from "src/models/Rank";
+import { Value } from "src/models/Value";
+import { Rank } from "src/models/Rank";
 import { Colors } from "src/style/Colors";
 
 import { VoteBadge } from "./VoteBadge";
@@ -584,7 +584,7 @@ const cardCheckCss = style({
 });
 
 interface PropsCardValue {
-  value: ValueView;
+  value: Value;
   check: () => void;
   rate: () => void;
   remove: (rank: Rank | undefined) => void;
@@ -598,13 +598,17 @@ export const CardValue = ({
   rate,
   remove,
 }: PropsCardValue) => {
-  const { t } = useTranslation();
   const { language } = useContext(UserContext);
 
-  const tradLocalLanguage = value.trads.find((el) => el.iso === language.iso);
-  const tradEnglish = value.trads.find((el) => el.iso === DEFAULT_ISO_LANGUAGE);
+  const nameLocalLanguage = value.name[language.iso];
+  const nameEnglish = value.name[DEFAULT_ISO_LANGUAGE];
+  const name = nameLocalLanguage ? nameLocalLanguage : nameEnglish;
 
-  const trad = tradLocalLanguage ? tradLocalLanguage : tradEnglish;
+  const descriptionLocalLanguage = value.description[language.iso];
+  const descriptionEnglish = value.description[DEFAULT_ISO_LANGUAGE];
+  const description = descriptionLocalLanguage
+    ? descriptionLocalLanguage
+    : descriptionEnglish;
 
   const rank = ranks.find((el) => value.id === el.value.id);
   const isCheck = rank !== undefined;
@@ -647,29 +651,20 @@ export const CardValue = ({
             <VoteBadge value={rank.notation} tooltip={rank.opinion} />
           </div>
         )}
-        {trad && (
-          <>
-            <Typography variant="h4">{trad.name}</Typography>
-            <Tooltip title={trad.description} placement="top">
-              <Typography
-                variant="body1"
-                sx={{
-                  display: "-webkit-box",
-                  overflow: "hidden",
-                  WebkitBoxOrient: "vertical",
-                  WebkitLineClamp: 3,
-                }}
-              >
-                {trad.description}
-              </Typography>
-            </Tooltip>
-          </>
-        )}
-        {tradLocalLanguage === undefined && (
-          <Alert severity="info" variant="outlined" sx={{ mt: 1 }}>
-            {t("commun.notavailableinyourlanguage")}
-          </Alert>
-        )}
+        <Typography variant="h4">{name}</Typography>
+        <Tooltip title={description} placement="top">
+          <Typography
+            variant="body1"
+            sx={{
+              display: "-webkit-box",
+              overflow: "hidden",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 3,
+            }}
+          >
+            {description}
+          </Typography>
+        </Tooltip>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end", display: "flex" }}>
         {isCheck ? (
@@ -690,22 +685,21 @@ export const CardValue = ({
 };
 
 interface PropsCardValueTranslate {
-  value: ValueView;
+  value: Value;
 }
 
 export const CardValueTranslate = ({ value }: PropsCardValueTranslate) => {
   const { language } = useContext(UserContext);
 
-  const tradLocalLanguage = value.trads.find((el) => el.iso === language.iso);
+  const nameLocalLanguage = value.name[language.iso];
+  const nameEnglish = value.name[DEFAULT_ISO_LANGUAGE];
+  const name = nameLocalLanguage ? nameLocalLanguage : nameEnglish;
 
-  const tradEnglish = value.trads.find((el) => el.iso === DEFAULT_ISO_LANGUAGE);
-  const firstTrad = value.trads[0];
-
-  const trad = tradLocalLanguage
-    ? tradLocalLanguage
-    : tradEnglish
-    ? tradEnglish
-    : firstTrad;
+  const descriptionLocalLanguage = value.description[language.iso];
+  const descriptionEnglish = value.description[DEFAULT_ISO_LANGUAGE];
+  const description = descriptionLocalLanguage
+    ? descriptionLocalLanguage
+    : descriptionEnglish;
 
   return (
     <Card className={cardHeightCss} sx={{ padding: 2 }}>
@@ -722,12 +716,8 @@ export const CardValueTranslate = ({ value }: PropsCardValueTranslate) => {
           />
         </Grid>
         <Grid item xs={4}>
-          {trad && (
-            <>
-              <Typography variant="h4">{trad.name}</Typography>
-              <Typography variant="body1">{trad.description}</Typography>
-            </>
-          )}
+          <Typography variant="h4">{name}</Typography>
+          <Typography variant="body1">{description}</Typography>
         </Grid>
         <Grid item xs={5}>
           <TranslateForm
@@ -816,16 +806,23 @@ export const CardRankBasic = ({ index, rank }: PropsCardRankBasic) => {
 };
 
 interface PropsCardRank {
-  rank: RankDetail;
+  rank: Rank;
   rate: () => void;
   remove: () => void;
   index: number;
 }
 
 export const CardRank = ({ index, rank, rate, remove }: PropsCardRank) => {
-  const { t } = useTranslation();
   const { language } = useContext(UserContext);
-  const isTradLocal = language.id === rank.language;
+  const nameLocalLanguage = rank.value.name[language.iso];
+  const nameEnglish = rank.value.name[DEFAULT_ISO_LANGUAGE];
+  const name = nameLocalLanguage ? nameLocalLanguage : nameEnglish;
+
+  const descriptionLocalLanguage = rank.value.description[language.iso];
+  const descriptionEnglish = rank.value.description[DEFAULT_ISO_LANGUAGE];
+  const description = descriptionLocalLanguage
+    ? descriptionLocalLanguage
+    : descriptionEnglish;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: rank.id });
@@ -871,8 +868,8 @@ export const CardRank = ({ index, rank, rate, remove }: PropsCardRank) => {
           minHeight: px(250),
           cursor: "grab",
         }}
-        image={getUrlPublic(BUCKET_VALUE, rank.image)}
-        title={rank.name}
+        image={getUrlPublic(BUCKET_VALUE, rank.value.image)}
+        title={name}
         {...listeners}
       />
       <CardContent
@@ -889,29 +886,20 @@ export const CardRank = ({ index, rank, rate, remove }: PropsCardRank) => {
         >
           <VoteBadge value={rank.notation} tooltip={rank.opinion} />
         </div>
-
-        {isTradLocal ? (
-          <>
-            <Typography variant="h4">{rank.name}</Typography>
-            <Tooltip title={rank.description} placement="top">
-              <Typography
-                variant="body1"
-                sx={{
-                  display: "-webkit-box",
-                  overflow: "hidden",
-                  WebkitBoxOrient: "vertical",
-                  WebkitLineClamp: 3,
-                }}
-              >
-                {rank.description}
-              </Typography>
-            </Tooltip>
-          </>
-        ) : (
-          <Alert severity="info" variant="outlined" sx={{ mt: 1 }}>
-            {t("commun.notavailableinyourlanguage")}
-          </Alert>
-        )}
+        <Typography variant="h4">{name}</Typography>
+        <Tooltip title={description} placement="top">
+          <Typography
+            variant="body1"
+            sx={{
+              display: "-webkit-box",
+              overflow: "hidden",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 3,
+            }}
+          >
+            {description}
+          </Typography>
+        </Tooltip>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end", display: "flex" }}>
         <IconButton aria-label="Remove" onClick={(event) => removeRank(event)}>

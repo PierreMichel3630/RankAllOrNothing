@@ -12,11 +12,11 @@ import {
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Rank, RankDetail, RankInsert, RankUpdate } from "src/models/Rank";
+import { Rank, RankInsert, RankUpdate } from "src/models/Rank";
 import * as Yup from "yup";
 import { MessageSnackbar } from "../commun/Snackbar";
 import {
-  calculationRank,
+  calculationRankType,
   countRanksByThemeAndType,
   insertRank,
   updateRank,
@@ -25,7 +25,7 @@ import {
 interface Props {
   id_extern: string;
   type: string;
-  rank?: Rank | RankDetail;
+  rank?: Rank;
   id_theme: number;
   validate: () => void;
 }
@@ -112,14 +112,19 @@ export const RankTMDBForm = ({
   });
 
   const getCalculationRank = async () => {
-    const res = await calculationRank(id_theme, formik.values.notation);
+    const res = await calculationRankType(
+      id_theme,
+      formik.values.notation,
+      rank ? rank.id : undefined,
+      type
+    );
     const newRank = res.count !== null ? res.count + 1 : 1;
     formik.setFieldValue("rank", newRank);
   };
 
   useEffect(() => {
     getCalculationRank();
-  }, [formik.values.notation]);
+  }, [formik.values.notation, type, rank, id_theme]);
 
   const getMax = async () => {
     const res = await countRanksByThemeAndType(Number(id_theme), type);

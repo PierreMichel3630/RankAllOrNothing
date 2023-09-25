@@ -179,7 +179,6 @@ export const HomeMoviesPage = () => {
 
   useEffect(() => {
     if (itemToCheck) {
-      itemToCheck.isSee ? checkValue(itemToCheck) : removeRank(itemToCheck);
       if (user !== null) {
         itemToCheck.isSee ? checkValue(itemToCheck) : removeRank(itemToCheck);
       } else {

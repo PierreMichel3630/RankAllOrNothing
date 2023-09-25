@@ -1,4 +1,3 @@
-import { useContext, useState } from "react";
 import {
   Button,
   FormControl,
@@ -7,21 +6,18 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
-import * as Yup from "yup";
 import { useFormik } from "formik";
-import { MessageSnackbar } from "../commun/Snackbar";
-import { LanguageInput } from "../input/LanguageInput";
-import { FileUploadInput } from "../input/FileUploadInput";
-import { BUCKET_VALUE, storeFile } from "src/api/supabase/storage";
-import { Language } from "src/models/Language";
-import { TranslateValueInsert, Value, ValueInsert } from "src/models/Value";
-import {
-  insertTranslateValue,
-  insertValue,
-  nextIdValue,
-} from "src/api/supabase/value";
+import { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { UserContext } from "src/App";
+import { BUCKET_VALUE, storeFile } from "src/api/supabase/storage";
+import { insertValue, nextIdValue } from "src/api/supabase/value";
+import { Language } from "src/models/Language";
+import { ValueInsert } from "src/models/Value";
+import * as Yup from "yup";
+import { MessageSnackbar } from "../commun/Snackbar";
+import { FileUploadInput } from "../input/FileUploadInput";
+import { LanguageInput } from "../input/LanguageInput";
 
 interface Props {
   idTheme: number;
@@ -53,11 +49,6 @@ export const ValueForm = ({ idTheme, validate }: Props) => {
     description: Yup.string(),
   });
 
-  const addValue = async (value: ValueInsert) => {
-    const { data } = await insertValue(value);
-    return data as Value;
-  };
-
   const getNextId = async () => {
     const { data } = await nextIdValue();
     return data !== null ? data.id + 1 : undefined;
@@ -82,25 +73,21 @@ export const ValueForm = ({ idTheme, validate }: Props) => {
               values.image as unknown as File
             );
             if (image !== null) {
-              const value: Value = await addValue({
+              const value: ValueInsert = {
                 image: image.path,
                 theme: idTheme,
-              });
-              if (value) {
-                const translateValue: TranslateValueInsert = {
-                  name: values.name,
-                  description: values.description,
-                  language: values.language.id,
-                  value: value.id,
-                };
-                const { error } = await insertTranslateValue(translateValue);
-                if (error) {
-                  setMessage(t("commun.error"));
-                } else {
-                  validate();
-                }
-              } else {
+                description: {
+                  [values.language.iso]: values.description,
+                },
+                name: {
+                  [values.language.iso]: values.name,
+                },
+              };
+              const { error } = await insertValue(value);
+              if (error) {
                 setMessage(t("commun.error"));
+              } else {
+                validate();
               }
             } else {
               setMessage(t("commun.error"));

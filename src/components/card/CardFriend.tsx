@@ -24,11 +24,14 @@ export const CardInvitationFriend = ({
         <Grid
           container
           justifyContent="space-between"
-          flexDirection="row"
           alignItems="center"
+          sx={{
+            textAlign: { xs: "center", sm: "left" },
+            flexDirection: { xs: "column", sm: "row" },
+          }}
         >
           <Grid item>
-            <AvatarAccount avatar={friend.user1.avatar} size={50} />
+            <AvatarAccount avatar={friend.user1.avatar} size={80} />
           </Grid>
           <Grid item>
             <Typography variant="h2">{friend.user1.username}</Typography>
@@ -40,7 +43,11 @@ export const CardInvitationFriend = ({
           </Grid>
           <Grid
             item
-            sx={{ display: "flex", flexDirection: "column", gap: px(5) }}
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "row", sm: "column" },
+              gap: px(5),
+            }}
           >
             <Button
               variant="contained"
@@ -78,11 +85,14 @@ export const CardRequestFriend = ({ friend }: PropsCardRequestFriend) => {
         <Grid
           container
           justifyContent="space-between"
-          flexDirection="row"
           alignItems="center"
+          sx={{
+            textAlign: { xs: "center", sm: "left" },
+            flexDirection: { xs: "column", sm: "row" },
+          }}
         >
           <Grid item>
-            <AvatarAccount avatar={friend.user2.avatar} size={50} />
+            <AvatarAccount avatar={friend.user2.avatar} size={80} />
           </Grid>
           <Grid item>
             <Typography variant="h2">{friend.user2.username}</Typography>

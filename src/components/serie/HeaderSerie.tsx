@@ -174,7 +174,9 @@ export const HeaderSerie = ({ detail, videos, isLoading }: Props) => {
               </Grid>
               <Grid item xs={12} sx={{ display: "flex", gap: 2 }}>
                 <Tooltip title={t("commun.rankuser")}>
-                  <VoteBadge value={detail.vote_average} />
+                  <>
+                    <VoteBadge value={detail.vote_average} />
+                  </>
                 </Tooltip>
                 {!isLoadingRank && (
                   <>

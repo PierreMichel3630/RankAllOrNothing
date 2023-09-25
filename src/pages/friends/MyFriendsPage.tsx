@@ -32,7 +32,7 @@ export const MyFriendsPage = () => {
   return (
     <Grid container spacing={1}>
       {profiles.map((profile) => (
-        <Grid item xs={3} key={profile.id}>
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={profile.id}>
           <CardProfile profile={profile} />
         </Grid>
       ))}

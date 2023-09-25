@@ -14,6 +14,11 @@ interface Props {
 export const CardProfile = ({ profile, addToFriend }: Props) => {
   const { t } = useTranslation();
 
+  const add = (event: any) => {
+    event.preventDefault();
+    if (addToFriend) addToFriend();
+  };
+
   return (
     <Link to={`/user/${profile.id}`}>
       <Card variant="outlined">
@@ -38,7 +43,7 @@ export const CardProfile = ({ profile, addToFriend }: Props) => {
               color="secondary"
               size="small"
               fullWidth
-              onClick={addToFriend}
+              onClick={add}
             >
               {t("commun.addtofriend")}
             </Button>

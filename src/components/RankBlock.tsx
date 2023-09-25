@@ -1,14 +1,12 @@
 import { Alert, Grid } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { UserContext } from "src/App";
 import { deleteRank, getRankByUser, updateRank } from "src/api/supabase/rank";
 import { CardRank, CardRankBasic } from "src/components/commun/Card";
 import { MessageSnackbar } from "src/components/commun/Snackbar";
 import { CardSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { RankDetailDialog } from "src/components/dialog/RankDetailDialog";
 import { useAuth } from "src/context/AuthProviderSupabase";
-import { RankDetail } from "src/models/Rank";
 import { Theme } from "src/models/Theme";
 
 import {
@@ -28,6 +26,7 @@ import {
 } from "@dnd-kit/sortable";
 import { Navigate } from "react-router-dom";
 import { Profile } from "src/models/Profile";
+import { Rank } from "src/models/Rank";
 
 interface Props {
   theme: Theme;
@@ -36,11 +35,10 @@ export const RankBlock = ({ theme }: Props) => {
   const ITEMPERPAGE = 20;
 
   const { t } = useTranslation();
-  const { language } = useContext(UserContext);
   const { user } = useAuth();
 
-  const [rank, setRank] = useState<RankDetail | undefined>(undefined);
-  const [ranks, setRanks] = useState<Array<RankDetail>>([]);
+  const [rank, setRank] = useState<Rank | undefined>(undefined);
+  const [ranks, setRanks] = useState<Array<Rank>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [message, setMessage] = useState("");
   const [openModalRate, setOpenModalRate] = useState(false);
@@ -53,10 +51,10 @@ export const RankBlock = ({ theme }: Props) => {
   );
 
   const getAllRanks = async () => {
-    if (user && theme && language) {
-      const { data } = await getRankByUser(user.id, theme.id, language.id);
+    if (user && theme) {
+      const { data } = await getRankByUser(user.id, theme.id);
       if (data) {
-        setRanks(data as Array<RankDetail>);
+        setRanks(data as Array<Rank>);
         setIsLoading(false);
       }
     }
@@ -65,9 +63,9 @@ export const RankBlock = ({ theme }: Props) => {
   useEffect(() => {
     setIsLoading(true);
     getAllRanks();
-  }, [user, theme, language]);
+  }, [user, theme]);
 
-  const removeRank = async (rank: RankDetail) => {
+  const removeRank = async (rank: Rank) => {
     const { error } = await deleteRank(rank.id);
     if (error) {
       setMessage(t("commun.error"));
@@ -77,7 +75,7 @@ export const RankBlock = ({ theme }: Props) => {
     }
   };
 
-  const rateRank = async (rank: RankDetail) => {
+  const rateRank = async (rank: Rank) => {
     setRank(rank);
     setOpenModalRate(true);
   };
@@ -149,7 +147,6 @@ export const RankBlock = ({ theme }: Props) => {
               close={closeModalRank}
               rank={rank}
               validate={refreshRank}
-              idTheme={theme.id}
             />
           )}
         </Grid>
@@ -169,16 +166,15 @@ export const RankProfileBlock = ({ theme, profile }: PropsRankProfileBlock) => {
   const ITEMPERPAGE = 20;
 
   const { t } = useTranslation();
-  const { language } = useContext(UserContext);
   const { user } = useAuth();
-  const [ranks, setRanks] = useState<Array<RankDetail>>([]);
+  const [ranks, setRanks] = useState<Array<Rank>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getAllRanks = async () => {
-    if (user && theme && language) {
-      const { data } = await getRankByUser(profile.id, theme.id, language.id);
+    if (user && theme) {
+      const { data } = await getRankByUser(profile.id, theme.id);
       if (data) {
-        setRanks(data as Array<RankDetail>);
+        setRanks(data as Array<Rank>);
         setIsLoading(false);
       }
     }
@@ -187,7 +183,7 @@ export const RankProfileBlock = ({ theme, profile }: PropsRankProfileBlock) => {
   useEffect(() => {
     setIsLoading(true);
     getAllRanks();
-  }, [user, theme, language]);
+  }, [user, theme]);
 
   return (
     <Grid container spacing={1}>

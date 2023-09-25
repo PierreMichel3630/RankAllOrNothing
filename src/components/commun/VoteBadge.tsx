@@ -41,28 +41,40 @@ export const VoteBadge = ({ value, tooltip }: Props) => {
     color = Colors.red;
   }
 
-  return tooltip ? (
-    <Tooltip title={tooltip}>
-      <div className={divCss}>
-        <div>
-          <CircleArc percent={percent} fill="none" size={40} color={color} />
+  return (
+    <>
+      {tooltip ? (
+        <Tooltip title={tooltip}>
+          <div className={divCss}>
+            <div>
+              <CircleArc
+                percent={percent}
+                fill="none"
+                size={40}
+                color={color}
+              />
+            </div>
+            <Typography
+              variant="body2"
+              sx={{ position: "absolute", color: "white" }}
+            >
+              {value !== null ? rating : "-.--"}
+            </Typography>
+          </div>
+        </Tooltip>
+      ) : (
+        <div className={divCss}>
+          <div>
+            <CircleArc percent={percent} fill="none" size={40} color={color} />
+          </div>
+          <Typography
+            variant="body2"
+            sx={{ position: "absolute", color: "white" }}
+          >
+            {value !== null ? rating : "-.--"}
+          </Typography>
         </div>
-        <Typography
-          variant="body2"
-          sx={{ position: "absolute", color: "white" }}
-        >
-          {value !== null ? rating : "-.--"}
-        </Typography>
-      </div>
-    </Tooltip>
-  ) : (
-    <div className={divCss}>
-      <div>
-        <CircleArc percent={percent} fill="none" size={40} color={color} />
-      </div>
-      <Typography variant="body2" sx={{ position: "absolute", color: "white" }}>
-        {value !== null ? rating : "-.--"}
-      </Typography>
-    </div>
+      )}
+    </>
   );
 };

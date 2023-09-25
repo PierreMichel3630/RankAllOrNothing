@@ -28,16 +28,12 @@ export const sortByEpisodeNumber = (a: any, b: any) =>
   a.episode_number > b.episode_number ? 1 : -1;
 
 export const sortByTrads = (a: any, b: any, language: Language) => {
-  const tradLocalLanguageA = a.trads.find((el: any) => el.iso === language.iso);
-  const tradEnglishA = a.trads.find(
-    (el: any) => el.iso === DEFAULT_ISO_LANGUAGE
-  );
-  const tradA = tradLocalLanguageA ? tradLocalLanguageA : tradEnglishA;
+  const nameLocalLanguageA = a.name[language.iso];
+  const nameEnglishA = a.name[DEFAULT_ISO_LANGUAGE];
+  const nameA = nameLocalLanguageA ? nameLocalLanguageA : nameEnglishA;
 
-  const tradLocalLanguageB = b.trads.find((el: any) => el.iso === language.iso);
-  const tradEnglishB = b.trads.find(
-    (el: any) => el.iso === DEFAULT_ISO_LANGUAGE
-  );
-  const tradB = tradLocalLanguageB ? tradLocalLanguageB : tradEnglishB;
-  return tradA && tradB ? tradA.name.localeCompare(tradB.name) : -1;
+  const nameLocalLanguageB = b.name[language.iso];
+  const nameEnglishB = b.name[DEFAULT_ISO_LANGUAGE];
+  const nameB = nameLocalLanguageB ? nameLocalLanguageB : nameEnglishB;
+  return nameA && nameB ? nameA.localeCompare(nameB) : -1;
 };
