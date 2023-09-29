@@ -12,6 +12,7 @@ import { UnauthorizedBlock } from "src/components/UnauthorizedBlock";
 import { AvatarAccount } from "src/components/avatar/AvatarAccount";
 import { ThemeAutocomplete } from "src/components/input/ThemeAutocomplete";
 import { RankTmdbProfileBlock } from "src/components/tmdb/BlockRankTmdb";
+import { useAuth } from "src/context/AuthProviderSupabase";
 import { FriendNotJoin } from "src/models/Friend";
 import { Profile } from "src/models/Profile";
 import { Theme } from "src/models/Theme";
@@ -21,8 +22,9 @@ export const ProfilePage = () => {
   let { id } = useParams();
   const { t } = useTranslation();
   const { language } = useContext(UserContext);
+  const { profile } = useAuth();
 
-  const [profile, setProfile] = useState<null | Profile>(null);
+  const [profileSelect, setProfileSelect] = useState<null | Profile>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState<undefined | boolean>(
     undefined
@@ -32,10 +34,15 @@ export const ProfilePage = () => {
   const [themes, setThemes] = useState<Array<Theme>>([]);
 
   const getProfile = async () => {
-    if (id) {
-      const { data } = await getProfil(id);
-      setProfile(data as Profile);
-      setIsLoading(false);
+    if (id && profile) {
+      if (id === profile.id) {
+        setProfileSelect(profile);
+        setIsLoading(false);
+      } else {
+        const { data } = await getProfil(id);
+        setProfileSelect(data as Profile);
+        setIsLoading(false);
+      }
     }
   };
 
@@ -43,7 +50,7 @@ export const ProfilePage = () => {
     setIsLoading(true);
     getProfile();
     getFriend();
-  }, [id]);
+  }, [id, profile]);
 
   const getThemes = async () => {
     const { data } = await getAllThemes();
@@ -57,22 +64,27 @@ export const ProfilePage = () => {
   }, []);
 
   const getFriend = async () => {
-    if (id) {
-      const { data } = await selectFriendByProfileId(id);
-      const friend = data as FriendNotJoin;
-      setIsAuthorized(
-        friend !== null
-          ? friend.status === "VALID" ||
-              (friend.status === "PROGRESS" && friend.user1 === id)
-          : false
-      );
+    if (id && profile) {
+      if (id === profile.id) {
+        setIsAuthorized(true);
+      } else {
+        const { data } = await selectFriendByProfileId(id);
+        const friend = data as FriendNotJoin;
+
+        setIsAuthorized(
+          friend !== null
+            ? friend.status === "VALID" ||
+                (friend.status === "PROGRESS" && friend.user1 === id)
+            : false
+        );
+      }
     }
   };
 
   return (
     <Container maxWidth="md">
       <Grid container spacing={2}>
-        {profile && (
+        {profileSelect && (
           <Grid
             item
             xs={12}
@@ -83,12 +95,14 @@ export const ProfilePage = () => {
               justifyContent: "center",
             }}
           >
-            <AvatarAccount avatar={profile.avatar} size={100} />
+            <AvatarAccount avatar={profileSelect.avatar} size={100} />
             <div>
-              <Typography variant="h1">{profile.username}</Typography>
+              <Typography variant="h1">{profileSelect.username}</Typography>
               <Typography variant="caption">
                 {t("commun.createdthe", {
-                  value: moment(profile.created_at).format("DD MMMM YYYY"),
+                  value: moment(profileSelect.created_at).format(
+                    "DD MMMM YYYY"
+                  ),
                 })}
               </Typography>
             </div>
@@ -106,15 +120,15 @@ export const ProfilePage = () => {
                 />
               </Grid>
             )}
-            {theme && profile && (
+            {theme && profileSelect && (
               <Grid item xs={12}>
                 {theme.id === THEMETMDB ? (
                   <Grid item xs={12}>
-                    <RankTmdbProfileBlock profile={profile} />
+                    <RankTmdbProfileBlock profile={profileSelect} />
                   </Grid>
                 ) : (
                   <Grid item xs={12}>
-                    <RankProfileBlock theme={theme} profile={profile} />
+                    <RankProfileBlock theme={theme} profile={profileSelect} />
                   </Grid>
                 )}
               </Grid>
