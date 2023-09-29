@@ -28,3 +28,10 @@ export const selectFriendById = (id: number) =>
     .select("*, user1!inner(*), user2!inner(*)")
     .eq("id", id)
     .maybeSingle();
+
+export const selectFriendByProfileId = (id: string) =>
+  supabase
+    .from(SUPABASE_FRIEND_TABLE)
+    .select("*")
+    .or(`user1.eq.${id},user2.eq.${id}`)
+    .maybeSingle();

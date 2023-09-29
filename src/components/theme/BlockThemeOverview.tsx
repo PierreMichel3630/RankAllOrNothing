@@ -6,7 +6,7 @@ import { UserContext } from "src/App";
 import {
   countRanksByTheme,
   deleteRank,
-  getRanksByTheme,
+  getRankByUser,
   insertCheck,
 } from "src/api/supabase/rank";
 import { countValueByTheme, getValuesByTheme } from "src/api/supabase/value";
@@ -51,15 +51,17 @@ export const BlockThemeOverview = ({ theme }: Props) => {
   const [openModalRate, setOpenModalRate] = useState(false);
 
   const getRanks = async () => {
-    const { data } = await getRanksByTheme(theme.id);
-    if (data) {
-      setRanks(data as Array<Rank>);
+    if (user) {
+      const { data } = await getRankByUser(user.id, theme.id);
+      if (data) {
+        setRanks(data as Array<Rank>);
+      }
     }
   };
 
   useEffect(() => {
     getRanks();
-  }, [theme]);
+  }, [theme, user]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -139,8 +141,10 @@ export const BlockThemeOverview = ({ theme }: Props) => {
   };
 
   const getCountRank = async () => {
-    const res = await countRanksByTheme(Number(theme.id));
-    setRankTotal(res.count);
+    if (user) {
+      const res = await countRanksByTheme(user.id, Number(theme.id));
+      setRankTotal(res.count);
+    }
   };
 
   const getCountValue = async () => {
@@ -157,7 +161,7 @@ export const BlockThemeOverview = ({ theme }: Props) => {
 
   useEffect(() => {
     getCompletion();
-  }, [theme]);
+  }, [theme, user]);
 
   return (
     <Grid container spacing={2} alignItems="center">

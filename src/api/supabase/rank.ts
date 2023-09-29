@@ -4,6 +4,7 @@ import { supabase } from "../supabase";
 export const SUPABASE_RANK_TABLE = "rank";
 
 export const calculationRank = (
+  useruuid: string,
   theme: number,
   notation: number,
   id: undefined | number
@@ -13,15 +14,18 @@ export const calculationRank = (
         .from(SUPABASE_RANK_TABLE)
         .select("*", { count: "exact", head: true })
         .eq("theme", theme)
+        .eq("user_uuid", useruuid)
         .not("id", "in", `(${id})`)
         .gt("notation", notation)
     : supabase
         .from(SUPABASE_RANK_TABLE)
         .select("*", { count: "exact", head: true })
         .eq("theme", theme)
+        .eq("user_uuid", useruuid)
         .gt("notation", notation);
 
 export const calculationRankType = (
+  useruuid: string,
   theme: number,
   notation: number,
   id: undefined | number,
@@ -33,6 +37,7 @@ export const calculationRankType = (
         .select("*", { count: "exact", head: true })
         .eq("theme", theme)
         .eq("type", type)
+        .eq("user_uuid", useruuid)
         .not("id", "in", `(${id})`)
         .gt("notation", notation)
     : supabase
@@ -40,20 +45,19 @@ export const calculationRankType = (
         .select("*", { count: "exact", head: true })
         .eq("theme", theme)
         .eq("type", type)
+        .eq("user_uuid", useruuid)
         .gt("notation", notation);
 
-export const getRanks = () => {
-  return supabase.from(SUPABASE_RANK_TABLE).select("*, value!inner(*)");
-};
-
-export const countRanksByTheme = (idTheme: number) => {
+export const countRanksByTheme = (useruuid: string, idTheme: number) => {
   return supabase
     .from(SUPABASE_RANK_TABLE)
     .select("*", { count: "exact", head: true })
-    .eq("theme", idTheme);
+    .eq("theme", idTheme)
+    .eq("user_uuid", useruuid);
 };
 
 export const countRanksByThemeAndType = (
+  useruuid: string,
   idTheme: number,
   type: string | null
 ) => {
@@ -63,21 +67,16 @@ export const countRanksByThemeAndType = (
         .select("*", { count: "exact", head: true })
         .eq("theme", idTheme)
         .eq("type", type)
+        .eq("user_uuid", useruuid)
     : supabase
         .from(SUPABASE_RANK_TABLE)
         .select("*", { count: "exact", head: true })
-        .eq("theme", idTheme);
-};
-
-export const getRanksByTheme = (idTheme: number) => {
-  return supabase
-    .from(SUPABASE_RANK_TABLE)
-    .select("*, value!inner(*)")
-    .eq("theme", idTheme)
-    .order("notation", { ascending: false });
+        .eq("theme", idTheme)
+        .eq("user_uuid", useruuid);
 };
 
 export const getRanksByIdExtern = (
+  useruuid: string,
   id: number,
   idTheme: number,
   type: string
@@ -88,6 +87,7 @@ export const getRanksByIdExtern = (
     .eq("id_extern", id)
     .eq("theme", idTheme)
     .eq("type", type)
+    .eq("user_uuid", useruuid)
     .maybeSingle();
 };
 

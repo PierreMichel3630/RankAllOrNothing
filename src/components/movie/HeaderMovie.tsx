@@ -39,6 +39,7 @@ import {
 } from "src/pages/tmdb/HomeMoviesPage";
 import { Rank } from "src/models/Rank";
 import { getRanksByIdExtern } from "src/api/supabase/rank";
+import { useAuth } from "src/context/AuthProviderSupabase";
 
 const posterCss = style({
   width: percent(100),
@@ -52,6 +53,7 @@ interface Props {
 
 export const HeaderMovie = ({ detail, videos, isLoading }: Props) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { setItemToRank, setItemToCheck, refresh } = useContext(RankContext);
 
   const [open, setOpen] = useState(false);
@@ -61,8 +63,9 @@ export const HeaderMovie = ({ detail, videos, isLoading }: Props) => {
   const trailers = videos.filter((video) => video.type === "Trailer");
 
   const getRank = async () => {
-    if (detail) {
+    if (detail && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         detail.id,
         THEMETMDB,
         MediaType.movie
@@ -82,7 +85,7 @@ export const HeaderMovie = ({ detail, videos, isLoading }: Props) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [detail]);
+  }, [detail, user]);
 
   const rankMovie = () => {
     if (detail) {

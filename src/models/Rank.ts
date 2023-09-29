@@ -39,3 +39,18 @@ export interface CheckInsert {
   theme?: number;
   rank: number;
 }
+
+export interface RankCompare {
+  value: Value;
+  rankUser1?: Rank;
+  rankUser2?: Rank;
+  diff: number | null;
+}
+
+export interface RankCompareExtern {
+  id: string;
+  type: string;
+  rankUser1?: Rank;
+  rankUser2?: Rank;
+  diff: number | null;
+}

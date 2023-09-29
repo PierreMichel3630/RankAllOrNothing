@@ -21,7 +21,6 @@ import { AvatarAccount } from "../avatar/AvatarAccount";
 
 const divCss = style({
   display: "flex",
-  padding: 16,
   alignItems: "center",
   gap: px(5),
 });
@@ -49,6 +48,10 @@ export const AccountMenu = ({ user }: Props) => {
     {
       name: t("header.account.friends"),
       url: "/friends",
+    },
+    {
+      name: t("header.account.compare"),
+      url: "/compare",
     },
     {
       name: t("header.account.parameter"),
@@ -97,20 +100,24 @@ export const AccountMenu = ({ user }: Props) => {
         onClose={handleCloseUserMenu}
       >
         {profile && (
-          <Link to={`/user/${profile.id}`}>
-            <div className={divCss}>
-              <AvatarAccount avatar={profile.avatar} size={50} />
-              <div>
-                {profile && (
-                  <Typography variant="h6">{profile.username}</Typography>
-                )}
-                <Typography variant="caption" color="secondary">
-                  {user.email}
-                </Typography>
-              </div>
-            </div>
+          <div>
+            <MenuItem>
+              <Link to={`/user/${profile.id}`}>
+                <div className={divCss}>
+                  <AvatarAccount avatar={profile.avatar} size={50} />
+                  <div>
+                    {profile && (
+                      <Typography variant="h6">{profile.username}</Typography>
+                    )}
+                    <Typography variant="caption" color="secondary">
+                      {user.email}
+                    </Typography>
+                  </div>
+                </div>
+              </Link>
+            </MenuItem>
             <Divider />
-          </Link>
+          </div>
         )}
         {settings.map((setting, index) => (
           <MenuItem key={index} onClick={() => goTo(setting.url)}>

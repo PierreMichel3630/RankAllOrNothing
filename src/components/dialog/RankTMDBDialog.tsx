@@ -7,6 +7,7 @@ import { getRanksByIdExtern } from "src/api/supabase/rank";
 import { useEffect, useState } from "react";
 import { Rank } from "src/models/Rank";
 import { THEMETMDB } from "src/routes/movieRoutes";
+import { useAuth } from "src/context/AuthProviderSupabase";
 
 const imageCss = style({
   maxWidth: percent(100),
@@ -21,19 +22,27 @@ interface Props {
 }
 
 export const RankTMDBDialog = ({ open, close, value, validate }: Props) => {
+  const { user } = useAuth();
   const [rank, setRank] = useState<undefined | Rank>(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
   const getRank = async () => {
-    const { data } = await getRanksByIdExtern(value.id, THEMETMDB, value.type);
-    setRank(data as Rank);
-    setIsLoading(false);
+    if (user) {
+      const { data } = await getRanksByIdExtern(
+        user.id,
+        value.id,
+        THEMETMDB,
+        value.type
+      );
+      setRank(data as Rank);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     setIsLoading(true);
     getRank();
-  }, [value]);
+  }, [value, user]);
 
   return (
     <Dialog onClose={close} open={open}>

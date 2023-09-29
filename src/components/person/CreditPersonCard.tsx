@@ -30,6 +30,7 @@ import { Rank } from "src/models/Rank";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useAuth } from "src/context/AuthProviderSupabase";
 
 const cardCss = style({
   cursor: "pointer",
@@ -56,6 +57,7 @@ interface PropsCastTv {
 }
 export const CastPersonTvCard = ({ value }: PropsCastTv) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { setItemToRank, setItemToCheck, refresh, setRefresh } =
     useContext(RankContext);
 
@@ -63,8 +65,9 @@ export const CastPersonTvCard = ({ value }: PropsCastTv) => {
   const [isLoadingRank, setIsLoadingRank] = useState(true);
 
   const getRank = async () => {
-    if (value) {
+    if (value && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         value.id,
         THEMETMDB,
         MediaType.tv
@@ -85,7 +88,7 @@ export const CastPersonTvCard = ({ value }: PropsCastTv) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [value]);
+  }, [value, user]);
 
   const rankTv = (event: any) => {
     event.preventDefault();
@@ -195,6 +198,7 @@ interface PropsCastMovie {
 
 export const CastPersonMovieCard = ({ value }: PropsCastMovie) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { setItemToRank, setItemToCheck, refresh, setRefresh } =
     useContext(RankContext);
 
@@ -202,8 +206,9 @@ export const CastPersonMovieCard = ({ value }: PropsCastMovie) => {
   const [isLoadingRank, setIsLoadingRank] = useState(true);
 
   const getRank = async () => {
-    if (value) {
+    if (value && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         value.id,
         THEMETMDB,
         MediaType.movie
@@ -224,7 +229,7 @@ export const CastPersonMovieCard = ({ value }: PropsCastMovie) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [value]);
+  }, [value, user]);
 
   const rankMovie = (event: any) => {
     event.preventDefault();

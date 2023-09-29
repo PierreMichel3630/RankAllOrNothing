@@ -26,6 +26,8 @@ import LinkIcon from "@mui/icons-material/Link";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useAuth } from "src/context/AuthProviderSupabase";
+import { VoteBadge } from "../commun/VoteBadge";
 
 const posterCss = style({
   width: percent(100),
@@ -38,6 +40,7 @@ interface Props {
 
 export const HeaderPerson = ({ detail, isLoading = false }: Props) => {
   let { id } = useParams();
+  const { user } = useAuth();
   const { t } = useTranslation();
   const { setItemToRank, setItemToCheck, refresh, setRefresh } =
     useContext(RankContext);
@@ -57,8 +60,9 @@ export const HeaderPerson = ({ detail, isLoading = false }: Props) => {
   }, [refresh]);
 
   const getRank = async () => {
-    if (detail) {
+    if (detail && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         detail.id,
         THEMETMDB,
         MediaType.person
@@ -71,7 +75,7 @@ export const HeaderPerson = ({ detail, isLoading = false }: Props) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [detail]);
+  }, [detail, user]);
 
   useEffect(() => {
     if (id) {
@@ -198,9 +202,25 @@ export const HeaderPerson = ({ detail, isLoading = false }: Props) => {
                   </Typography>
                 </Grid>
               )}
-              <Grid item xs={12} sx={{ display: "flex", gap: 2 }}>
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  alignContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 {!isLoadingRank && (
                   <>
+                    {rank && rank.notation && (
+                      <Tooltip title={t("commun.rankuser")}>
+                        <>
+                          <VoteBadge value={rank.notation} />
+                        </>
+                      </Tooltip>
+                    )}
                     {isCheck ? (
                       <Tooltip title={t("commun.notseeactor")}>
                         <IconButton

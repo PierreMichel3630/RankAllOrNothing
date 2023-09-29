@@ -1,5 +1,4 @@
 import {
-  Alert,
   Card,
   CardActions,
   CardContent,
@@ -56,6 +55,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import LinkIcon from "@mui/icons-material/Link";
+import { useAuth } from "src/context/AuthProviderSupabase";
 
 const cardCss = style({
   cursor: "pointer",
@@ -74,6 +74,7 @@ interface PropsPerson {
 
 export const CardPerson = ({ value }: PropsPerson) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { setItemToRank, setItemToCheck, refresh, setRefresh } =
     useContext(RankContext);
 
@@ -81,8 +82,9 @@ export const CardPerson = ({ value }: PropsPerson) => {
   const [isLoadingRank, setIsLoadingRank] = useState(true);
 
   const getRank = async () => {
-    if (value) {
+    if (value && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         value.id,
         THEMETMDB,
         MediaType.person
@@ -103,7 +105,7 @@ export const CardPerson = ({ value }: PropsPerson) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [value]);
+  }, [value, user]);
 
   const rankPerson = (event: any) => {
     event.preventDefault();
@@ -209,6 +211,7 @@ interface PropsPersonTv {
 
 export const CardPersonTv = ({ value }: PropsPersonTv) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { setItemToRank, setItemToCheck, refresh, setRefresh } =
     useContext(RankContext);
 
@@ -216,8 +219,9 @@ export const CardPersonTv = ({ value }: PropsPersonTv) => {
   const [isLoadingRank, setIsLoadingRank] = useState(true);
 
   const getRank = async () => {
-    if (value) {
+    if (value && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         value.id,
         THEMETMDB,
         MediaType.person
@@ -238,7 +242,7 @@ export const CardPersonTv = ({ value }: PropsPersonTv) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [value]);
+  }, [value, user]);
 
   const rankPerson = (event: any) => {
     event.preventDefault();
@@ -347,6 +351,7 @@ interface PropsPersonGuest {
 
 export const CardPersonGuest = ({ value }: PropsPersonGuest) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { setItemToRank, setItemToCheck, refresh, setRefresh } =
     useContext(RankContext);
 
@@ -354,8 +359,9 @@ export const CardPersonGuest = ({ value }: PropsPersonGuest) => {
   const [isLoadingRank, setIsLoadingRank] = useState(true);
 
   const getRank = async () => {
-    if (value) {
+    if (value && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         value.id,
         THEMETMDB,
         MediaType.person
@@ -376,7 +382,7 @@ export const CardPersonGuest = ({ value }: PropsPersonGuest) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [value]);
+  }, [value, user]);
 
   const rankPerson = (event: any) => {
     event.preventDefault();
@@ -731,14 +737,21 @@ export const CardValueTranslate = ({ value }: PropsCardValueTranslate) => {
 };
 
 interface PropsCardRankBasic {
-  rank: RankDetail;
+  rank: Rank;
   index: number;
 }
 
 export const CardRankBasic = ({ index, rank }: PropsCardRankBasic) => {
-  const { t } = useTranslation();
   const { language } = useContext(UserContext);
-  const isTradLocal = language.id === rank.language;
+  const nameLocalLanguage = rank.value.name[language.iso];
+  const nameEnglish = rank.value.name[DEFAULT_ISO_LANGUAGE];
+  const name = nameLocalLanguage ? nameLocalLanguage : nameEnglish;
+
+  const descriptionLocalLanguage = rank.value.description[language.iso];
+  const descriptionEnglish = rank.value.description[DEFAULT_ISO_LANGUAGE];
+  const description = descriptionLocalLanguage
+    ? descriptionLocalLanguage
+    : descriptionEnglish;
 
   return (
     <Card
@@ -761,10 +774,9 @@ export const CardRankBasic = ({ index, rank }: PropsCardRankBasic) => {
           aspectRatio: "auto",
           maxHeight: percent(100),
           minHeight: px(250),
-          cursor: "grab",
         }}
-        image={getUrlPublic(BUCKET_VALUE, rank.image)}
-        title={rank.name}
+        image={getUrlPublic(BUCKET_VALUE, rank.value.image)}
+        title={name}
       />
       <CardContent sx={{ position: "relative", mt: 1 }}>
         <div
@@ -777,29 +789,20 @@ export const CardRankBasic = ({ index, rank }: PropsCardRankBasic) => {
         >
           <VoteBadge value={rank.notation} tooltip={rank.opinion} />
         </div>
-
-        {isTradLocal ? (
-          <>
-            <Typography variant="h4">{rank.name}</Typography>
-            <Tooltip title={rank.description} placement="top">
-              <Typography
-                variant="body1"
-                sx={{
-                  display: "-webkit-box",
-                  overflow: "hidden",
-                  WebkitBoxOrient: "vertical",
-                  WebkitLineClamp: 3,
-                }}
-              >
-                {rank.description}
-              </Typography>
-            </Tooltip>
-          </>
-        ) : (
-          <Alert severity="info" variant="outlined" sx={{ mt: 1 }}>
-            {t("commun.notavailableinyourlanguage")}
-          </Alert>
-        )}
+        <Typography variant="h4">{name}</Typography>
+        <Tooltip title={description} placement="top">
+          <Typography
+            variant="body1"
+            sx={{
+              display: "-webkit-box",
+              overflow: "hidden",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 3,
+            }}
+          >
+            {description}
+          </Typography>
+        </Tooltip>
       </CardContent>
     </Card>
   );
@@ -914,7 +917,7 @@ export const CardRank = ({ index, rank, rate, remove }: PropsCardRank) => {
 };
 
 interface PropsCardRankTmdb {
-  rank: RankDetail;
+  rank: Rank;
   rate: (value: ItemToRank) => void;
   remove: () => void;
   index: number;
@@ -1121,7 +1124,7 @@ export const CardRankTmdb = ({
 };
 
 interface PropsCardRankTmdbProfile {
-  rank: RankDetail;
+  rank: Rank;
   index: number;
 }
 
@@ -1196,70 +1199,71 @@ export const CardRankTmdbProfile = ({
   }, [rank, language]);
 
   return (
-    <Card
-      className={classes(cardCss, cardHeightCss)}
-      sx={{ position: "relative" }}
-    >
-      {loading || value === undefined ? (
-        <>
-          <Skeleton
-            variant="rectangular"
-            sx={{ width: percent(100), height: px(250) }}
-          />
-          <CardContent>
-            <Skeleton width="60%" />
-            <Skeleton width="20%" />
-          </CardContent>
-        </>
-      ) : (
-        <>
-          <div
-            style={{
-              position: "absolute",
-              top: percent(2),
-              left: percent(2),
-            }}
-          >
-            <RankBadge rank={index + 1} />
-          </div>
-          <CardMedia
-            sx={{
-              width: percent(100),
-              aspectRatio: "2/3",
-              minHeight: px(300),
-              cursor: "grab",
-            }}
-            image={value.image}
-            title={value.name}
-          />
-          <CardContent sx={{ position: "relative", mt: 1, pb: 1 }}>
+    <Link to={`${BASEURLMOVIE}/${rank.type}/${rank.id_extern}`}>
+      <Card
+        className={classes(cardCss, cardHeightCss)}
+        sx={{ position: "relative" }}
+      >
+        {loading || value === undefined ? (
+          <>
+            <Skeleton
+              variant="rectangular"
+              sx={{ width: percent(100), height: px(250) }}
+            />
+            <CardContent>
+              <Skeleton width="60%" />
+              <Skeleton width="20%" />
+            </CardContent>
+          </>
+        ) : (
+          <>
             <div
               style={{
                 position: "absolute",
-                top: 0,
-                right: percent(2),
-                transform: "translate(0%,-65%)",
+                top: percent(2),
+                left: percent(2),
               }}
             >
-              <VoteBadge value={rank.notation} tooltip={rank.opinion} />
+              <RankBadge rank={index + 1} />
             </div>
-            <Typography variant="h4">{value.name}</Typography>
-            <Tooltip title={value.description} placement="bottom">
-              <Typography
-                variant="body1"
-                sx={{
-                  display: "-webkit-box",
-                  overflow: "hidden",
-                  WebkitBoxOrient: "vertical",
-                  WebkitLineClamp: 3,
+            <CardMedia
+              sx={{
+                width: percent(100),
+                aspectRatio: "2/3",
+                minHeight: px(300),
+              }}
+              image={value.image}
+              title={value.name}
+            />
+            <CardContent sx={{ position: "relative", mt: 1, pb: 1 }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: percent(2),
+                  transform: "translate(0%,-65%)",
                 }}
               >
-                {value.description}
-              </Typography>
-            </Tooltip>
-          </CardContent>
-        </>
-      )}
-    </Card>
+                <VoteBadge value={rank.notation} tooltip={rank.opinion} />
+              </div>
+              <Typography variant="h4">{value.name}</Typography>
+              <Tooltip title={value.description} placement="bottom">
+                <Typography
+                  variant="body1"
+                  sx={{
+                    display: "-webkit-box",
+                    overflow: "hidden",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: 3,
+                  }}
+                >
+                  {value.description}
+                </Typography>
+              </Tooltip>
+            </CardContent>
+          </>
+        )}
+      </Card>
+    </Link>
   );
 };

@@ -188,3 +188,15 @@ export const BadgeAccountSkeleton = () => (
     </Grid>
   </Grid>
 );
+
+export const ItemAccountSkeleton = () => (
+  <Grid container alignItems="center">
+    <Grid item xs={3}>
+      <Skeleton variant="circular" width={50} height={50} />
+    </Grid>
+    <Grid item xs={9}>
+      <Skeleton width={150} height={15} />
+      <Skeleton width={80} height={15} />
+    </Grid>
+  </Grid>
+);

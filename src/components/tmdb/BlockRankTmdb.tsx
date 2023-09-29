@@ -8,7 +8,6 @@ import {
   updateRank,
 } from "src/api/supabase/rank";
 import { useAuth } from "src/context/AuthProviderSupabase";
-import { RankDetail } from "src/models/Rank";
 import { MediaType } from "src/models/tmdb/enum";
 import { THEMETMDB } from "src/routes/movieRoutes";
 import { CardSkeleton } from "../commun/skeleton/Skeleton";
@@ -33,6 +32,7 @@ import {
 } from "@dnd-kit/sortable";
 import { sortByRank } from "src/utils/sort";
 import { Profile } from "src/models/Profile";
+import { Rank } from "src/models/Rank";
 
 export const BlockRankTmdb = () => {
   const ITEMPERPAGE = 20;
@@ -43,7 +43,7 @@ export const BlockRankTmdb = () => {
 
   const [filter, setFilter] = useState<MediaType>(MediaType.movie);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [ranks, setRanks] = useState<Array<RankDetail>>([]);
+  const [ranks, setRanks] = useState<Array<Rank>>([]);
   const [message, setMessage] = useState("");
   const [openModalRate, setOpenModalRate] = useState(false);
   const [itemToRank, setItemToRank] = useState<ItemToRank | undefined>(
@@ -69,7 +69,7 @@ export const BlockRankTmdb = () => {
         filter.toString()
       );
       if (data) {
-        const newRanks = data as Array<RankDetail>;
+        const newRanks = data as Array<Rank>;
         setRanks(newRanks.sort(sortByRank));
         setIsLoading(false);
       }
@@ -81,7 +81,7 @@ export const BlockRankTmdb = () => {
     getAllRanks();
   }, [user, language, filter]);
 
-  const removeRank = async (rank: RankDetail) => {
+  const removeRank = async (rank: Rank) => {
     const { error } = await deleteRank(rank.id);
     if (error) {
       setMessage(t("commun.error"));
@@ -220,7 +220,7 @@ export const RankTmdbProfileBlock = ({
 
   const [filter, setFilter] = useState<MediaType>(MediaType.movie);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [ranks, setRanks] = useState<Array<RankDetail>>([]);
+  const [ranks, setRanks] = useState<Array<Rank>>([]);
 
   const selectFilter = (value: MediaType) => {
     setFilter(value);
@@ -234,7 +234,7 @@ export const RankTmdbProfileBlock = ({
         filter.toString()
       );
       if (data) {
-        const newRanks = data as Array<RankDetail>;
+        const newRanks = data as Array<Rank>;
         setRanks(newRanks.sort(sortByRank));
         setIsLoading(false);
       }

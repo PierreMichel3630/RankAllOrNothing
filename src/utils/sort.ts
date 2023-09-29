@@ -37,3 +37,22 @@ export const sortByTrads = (a: any, b: any, language: Language) => {
   const nameB = nameLocalLanguageB ? nameLocalLanguageB : nameEnglishB;
   return nameA && nameB ? nameA.localeCompare(nameB) : -1;
 };
+
+export const sortByUsername = (a: any, b: any) =>
+  a.username > b.username ? 1 : -1;
+
+export const sortByDiff = (a: any, b: any) => {
+  if (a.diff === null) {
+    return 1;
+  }
+
+  if (b.diff === null) {
+    return -1;
+  }
+
+  if (a.diff === b.diff) {
+    return 0;
+  }
+
+  return a.diff < b.diff ? 1 : -1;
+};

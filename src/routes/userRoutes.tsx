@@ -1,8 +1,13 @@
 import { ProfilePage } from "src/pages/ProfilePage";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 export const UserRoutes = [
   {
     path: "/user/:id",
-    element: <ProfilePage />,
+    element: (
+      <ProtectedRoute>
+        <ProfilePage />
+      </ProtectedRoute>
+    ),
   },
 ];

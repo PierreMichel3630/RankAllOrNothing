@@ -81,13 +81,15 @@ export const AddFriendPage = () => {
           <Loading />
         </Grid>
       ) : (
-        <Grid item xs={12}>
-          <BasicSearchInput
-            label={t("commun.searchfriend")}
-            onChange={(value) => setSearch(value)}
-            value={search}
-            clear={() => setSearch("")}
-          />
+        <>
+          <Grid item xs={12}>
+            <BasicSearchInput
+              label={t("commun.searchfriend")}
+              onChange={(value) => setSearch(value)}
+              value={search}
+              clear={() => setSearch("")}
+            />
+          </Grid>
 
           {profiles.length > 0 ? (
             profiles.map((profile) => (
@@ -103,7 +105,7 @@ export const AddFriendPage = () => {
               <Alert severity="warning">{t("commun.noresult")}</Alert>
             </Grid>
           )}
-        </Grid>
+        </>
       )}
       <MessageSnackbar
         autoHideDuration={600000}

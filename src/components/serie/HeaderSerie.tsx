@@ -34,6 +34,7 @@ import { VoteBadge } from "../commun/VoteBadge";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useAuth } from "src/context/AuthProviderSupabase";
 
 const posterCss = style({
   width: percent(100),
@@ -47,6 +48,7 @@ interface Props {
 
 export const HeaderSerie = ({ detail, videos, isLoading }: Props) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { setItemToRank, setItemToCheck, refresh, setRefresh } =
     useContext(RankContext);
@@ -66,8 +68,9 @@ export const HeaderSerie = ({ detail, videos, isLoading }: Props) => {
   }, [refresh]);
 
   const getRank = async () => {
-    if (detail) {
+    if (detail && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         detail.id,
         THEMETMDB,
         MediaType.tv
@@ -80,7 +83,7 @@ export const HeaderSerie = ({ detail, videos, isLoading }: Props) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [detail]);
+  }, [detail, user]);
 
   const rankSerie = () => {
     if (detail) {

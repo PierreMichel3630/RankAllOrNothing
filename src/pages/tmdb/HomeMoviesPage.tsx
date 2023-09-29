@@ -143,20 +143,30 @@ export const HomeMoviesPage = () => {
   };
 
   const checkValue = async (value: ItemToCheck) => {
-    const res = await countRanksByThemeAndType(Number(THEMETMDB), value.type);
-    const rank = res.count !== null ? Number(res.count + 1) : 1;
-    const { error } = await insertCheck({
-      id_extern: value.id.toString(),
-      type: value.type.toString(),
-      theme: THEMETMDB,
-      rank,
-    });
-    if (error) {
-      setMessage(t("commun.error"));
-      setItemToCheck(undefined);
-      setRefresh(value.id);
+    if (user) {
+      const res = await countRanksByThemeAndType(
+        user.id,
+        Number(THEMETMDB),
+        value.type
+      );
+      const rank = res.count !== null ? Number(res.count + 1) : 1;
+      const { error } = await insertCheck({
+        id_extern: value.id.toString(),
+        type: value.type.toString(),
+        theme: THEMETMDB,
+        rank,
+      });
+      if (error) {
+        setMessage(t("commun.error"));
+        setItemToCheck(undefined);
+        setRefresh(value.id);
+      } else {
+        setMessage("");
+        setItemToCheck(undefined);
+        setRefresh(value.id);
+      }
     } else {
-      setMessage("");
+      setMessage(t("commun.error"));
       setItemToCheck(undefined);
       setRefresh(value.id);
     }

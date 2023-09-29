@@ -34,6 +34,7 @@ import StarRateIcon from "@mui/icons-material/StarRate";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { RankBadge } from "./RankBadge";
+import { useAuth } from "src/context/AuthProviderSupabase";
 
 const cardCss = style({
   cursor: "pointer",
@@ -71,6 +72,7 @@ interface PropsMovieSearch {
 
 export const CardMovieSearch = ({ value }: PropsMovieSearch) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { setItemToRank, setItemToCheck, refresh, setRefresh } =
     useContext(RankContext);
 
@@ -78,8 +80,9 @@ export const CardMovieSearch = ({ value }: PropsMovieSearch) => {
   const [isLoadingRank, setIsLoadingRank] = useState(true);
 
   const getRank = async () => {
-    if (value) {
+    if (value && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         value.id,
         THEMETMDB,
         MediaType.movie
@@ -100,7 +103,7 @@ export const CardMovieSearch = ({ value }: PropsMovieSearch) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [value]);
+  }, [value, user]);
 
   const rankMovie = (event: any) => {
     event.preventDefault();
@@ -233,6 +236,7 @@ interface PropsTvSearch {
 
 export const CardTvSearch = ({ value }: PropsTvSearch) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { setItemToRank, setItemToCheck, refresh, setRefresh } =
     useContext(RankContext);
 
@@ -240,8 +244,9 @@ export const CardTvSearch = ({ value }: PropsTvSearch) => {
   const [isLoadingRank, setIsLoadingRank] = useState(true);
 
   const getRank = async () => {
-    if (value) {
+    if (value && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         value.id,
         THEMETMDB,
         MediaType.tv
@@ -262,7 +267,7 @@ export const CardTvSearch = ({ value }: PropsTvSearch) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [value]);
+  }, [value, user]);
 
   const rankTv = (event: any) => {
     event.preventDefault();
@@ -395,6 +400,7 @@ interface PropsPersonSearch {
 
 export const CardPersonSearch = ({ value }: PropsPersonSearch) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { setItemToRank, setItemToCheck, refresh, setRefresh } =
     useContext(RankContext);
 
@@ -402,8 +408,9 @@ export const CardPersonSearch = ({ value }: PropsPersonSearch) => {
   const [isLoadingRank, setIsLoadingRank] = useState(true);
 
   const getRank = async () => {
-    if (value) {
+    if (value && user) {
       const { data } = await getRanksByIdExtern(
+        user.id,
         value.id,
         THEMETMDB,
         MediaType.person
@@ -424,7 +431,7 @@ export const CardPersonSearch = ({ value }: PropsPersonSearch) => {
   useEffect(() => {
     setIsLoadingRank(true);
     getRank();
-  }, [value]);
+  }, [value, user]);
 
   const rankPerson = (event: any) => {
     event.preventDefault();

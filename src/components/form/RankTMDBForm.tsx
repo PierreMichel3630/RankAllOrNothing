@@ -21,6 +21,7 @@ import {
   insertRank,
   updateRank,
 } from "src/api/supabase/rank";
+import { useAuth } from "src/context/AuthProviderSupabase";
 
 interface Props {
   id_extern: string;
@@ -38,6 +39,7 @@ export const RankTMDBForm = ({
   validate,
 }: Props) => {
   const MAX_NOTATION = 10;
+  const { user } = useAuth();
   const { t } = useTranslation();
   const [message, setMessage] = useState("");
   const [max, setMax] = useState(100);
@@ -112,30 +114,39 @@ export const RankTMDBForm = ({
   });
 
   const getCalculationRank = async () => {
-    const res = await calculationRankType(
-      id_theme,
-      formik.values.notation,
-      rank ? rank.id : undefined,
-      type
-    );
-    const newRank = res.count !== null ? res.count + 1 : 1;
-    formik.setFieldValue("rank", newRank);
+    if (user) {
+      const res = await calculationRankType(
+        user.id,
+        id_theme,
+        formik.values.notation,
+        rank ? rank.id : undefined,
+        type
+      );
+      const newRank = res.count !== null ? res.count + 1 : 1;
+      formik.setFieldValue("rank", newRank);
+    }
   };
 
   useEffect(() => {
     getCalculationRank();
-  }, [formik.values.notation, type, rank, id_theme]);
+  }, [formik.values.notation, type, rank, id_theme, user]);
 
   const getMax = async () => {
-    const res = await countRanksByThemeAndType(Number(id_theme), type);
-    const newMax =
-      res.count !== null ? (rank ? res.count : res.count + 1) : 100;
-    setMax(newMax);
+    if (user) {
+      const res = await countRanksByThemeAndType(
+        user.id,
+        Number(id_theme),
+        type
+      );
+      const newMax =
+        res.count !== null ? (rank ? res.count : res.count + 1) : 100;
+      setMax(newMax);
+    }
   };
 
   useEffect(() => {
     getMax();
-  }, [id_theme, rank]);
+  }, [id_theme, rank, user]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
