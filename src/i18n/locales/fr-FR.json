@@ -29,6 +29,8 @@
     "after": "Après",
     "all": "Tous",
     "avatar": "Avatar",
+    "avgrank": "Rank moyen",
+    "avgnotation": "Note moyenne",
     "actors": "Acteurs",
     "backdrop": "Fond d'écran",
     "before": "Avant",
@@ -58,6 +60,10 @@
     "myinvitation": "Mes invitations",
     "myrank": "Mon classement",
     "name": "Nom",
+    "nonotation": "Non notée",
+    "notationbetween": "Entre {{min}} et {{max}}",
+    "notationover": "Plus de {{min}}",
+    "notationunder": "Moins de {{max}}",
     "notseeactor": "Notez l'acteur comme non vu",
     "notseemovie": "Notez le film comme non vu",
     "notseeserie": "Notez la série comme non vu",
@@ -72,6 +78,8 @@
     "noresultvideo": "Aucune vidéo n'a été renseignée.",
     "noresultinvitation": "Aucune invitation en attente.",
     "noresultrequest": "Aucune demande d'ami en attente.",
+    "noresultreview": "Aucun avis n'a été renseigné.",
+    "notations": "notes",
     "or": "Ou",
     "origincountry": "Pays d'origine",
     "over": "Plus de",
@@ -87,9 +95,15 @@
     "rankserie": "Notez la série",
     "rankuser": "Note des utilisateurs",
     "ranking": "Classement",
+    "rankvalue": "Égale à {{value}}",
+    "rankbetween": "Entre {{min}} et {{max}}",
+    "rankover": "Supérieur à {{min}}",
+    "ranks": "ranks",
     "rate": "Notez",
     "refuse": "Refuser",
     "results": "Résultats",
+    "return": "Retour",
+    "reviews": "Avis",
     "runtime": "Durée",
     "searchactor": "Rechercher un acteur",
     "searchfriend": "Rechercher un ami via son nom d'utilisateur",
@@ -102,6 +116,7 @@
     "seeserie": "Notez la série comme vu",
     "series": "Séries",
     "sort": "Trier",
+    "statistic": "Statistique",
     "today": "Aujourd'hui",
     "trailer": "Bande annonce",
     "translate": "Traduire",
@@ -116,6 +131,7 @@
     "username": "Nom d'utilisateur",
     "validate": "Valider",
     "videos": "Vidéos",
+    "visibiliteaccount": "Paramètres de confidentialité du compte",
     "vote": "Vote",
     "waitvalidation": "En attente de validation",
     "waitinvitation": "Invitations en attente",
@@ -136,17 +152,31 @@
     "titleDesc": "Titre de Z-A"
   },
   "pages": {
+    "compare": {
+      "title": "Comparer"
+    },
+    "discover": {
+      "title": "Découverte"
+    },
+    "forgotpassword": {
+      "title": "Mot de passe oublié"
+    },
+    "friend": {
+      "title": "Mes Amis"
+    },
+    "friendadd": {
+      "title": "Ajout d'amis"
+    },
+    "friendinvitation": {
+      "title": "Invitation d'amis"
+    },
     "home": {
+      "title": "Accueil",
       "searchtitle": "Que voulez-vous classer ?",
       "search": "Rechercher un thème"
     },
-    "theme": {
-      "search": "Rechercher"
-    },
-    "discover": {
-      "title": "Discover Page"
-    },
     "login": {
+      "title": "Connexion",
       "hi": "Bienvenue",
       "credential": "Entrez vos identifiants pour continuer"
     },
@@ -155,17 +185,36 @@
       "summary": "Résumé",
       "minutes": "min"
     },
+    "parameters": {
+      "title": "Mes paramètres",
+      "infoemail": "Une confirmation sur l'ancienne et nouvelle adresse mail sera nécessaire. Vérifiez vos spams."
+    },
     "person": {
       "biography": "Bio",
       "searchmovie": "Rechercher un film",
       "searchserie": "Rechercher une série"
     },
+    "register": {
+      "title": "Inscription"
+    },
+    "resetpassword": {
+      "title": "Réinitialiser mot de passe"
+    },
+    "rank": {
+      "title": "Mes Classements"
+    },
+    "search": {
+      "title": "Rechercher"
+    },
     "serie": {
       "searchactor": "Rechercher un acteur ou personnage",
       "noresultactor": "Aucun acteur n'a été renseigné."
     },
-    "parameters": {
-      "infoemail": "Une confirmation sur l'ancienne et nouvelle adresse mail est nécessaire. Vérifiez vos spams."
+    "theme": {
+      "search": "Rechercher"
+    },
+    "trendingsearch": {
+      "title": "Recherche Tendance"
     }
   },
   "input": {
@@ -264,11 +313,16 @@
   },
   "alert": {
     "updateavatarsuccess": "Votre modification d'avatar à été pris en compte.",
+    "updatevisibilitysuccess": "Votre modification à été pris en compte.",
     "updateusernamesuccess": "Votre modification de nom d'utilisateur à été pris en compte.",
     "sendfriendrequest": "Votre demande d'ami a été envoyé.",
     "validatefriendrequest": "Demande d'ami validée.",
     "refusefriendrequest": "Demande d'ami refusée.",
     "updateemailsuccess": "Votre modification d'addresse mail est en cours. Veuillez confirmer sur votre ancien et nouveau email."
+  },
+  "information": {
+    "visibilityon": "Votre profil est visible pour tout le monde.",
+    "visibilityoff": "Votre profil est uniquement visible pour vos amis"
   },
   "notification": {
     "FRIENDREQUEST": {

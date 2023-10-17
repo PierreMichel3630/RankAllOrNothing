@@ -16,6 +16,7 @@ import { RegisterForm } from "src/components/form/authentification/RegisterForm"
 import logo from "../assets/ranking.png";
 import { GoogleButton } from "src/components/button/GoogleButton";
 import { signUpWithGoogle } from "src/api/supabase";
+import { Helmet } from "react-helmet-async";
 
 const cardCss = style({
   padding: 16,
@@ -32,6 +33,9 @@ export const RegisterPage = () => {
       maxWidth="sm"
       sx={{ minHeight: viewHeight(100), display: "flex", alignItems: "center" }}
     >
+      <Helmet>
+        <title>{`${t("pages.register.title")} - RankAllAndNothing`}</title>
+      </Helmet>
       <Card variant="outlined" className={cardCss}>
         <Grid container spacing={1} sx={{ textAlign: "center" }}>
           <Grid item xs={12}>

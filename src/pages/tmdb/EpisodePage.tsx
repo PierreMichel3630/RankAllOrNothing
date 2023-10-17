@@ -1,6 +1,7 @@
 import { Alert, Container, Grid } from "@mui/material";
 import { percent, viewHeight } from "csx";
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { UserContext } from "src/App";
@@ -24,10 +25,12 @@ import { SeasonDetail } from "src/models/tmdb/tv/SeasonDetail";
 import { SerieDetails } from "src/models/tmdb/tv/SerieDetails";
 import { getBreakpoint } from "src/utils/mediaQuery";
 import { style } from "typestyle";
+import { MovieContext } from "./HomeMoviesPage";
 
 export const EpisodePage = () => {
   let { id, episode, season } = useParams();
   const { language } = useContext(UserContext);
+  const { title } = useContext(MovieContext);
   const { t } = useTranslation();
 
   const [detail, setDetail] = useState<undefined | SerieDetails>(undefined);
@@ -161,6 +164,15 @@ export const EpisodePage = () => {
 
   return (
     <Grid container>
+      <Helmet>
+        <title>
+          {detail
+            ? `${title ?? ""} - ${detail.name} ${t(
+                "commun.episodes"
+              )} - RankAllAndNothing`
+            : "RankAllAndNothing"}
+        </title>
+      </Helmet>
       <Grid item xs={12} className={backdropCss}>
         <Container maxWidth="lg" sx={{ position: "relative" }}>
           <HeaderSerieEpisode

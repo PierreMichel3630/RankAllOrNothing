@@ -7,6 +7,7 @@ import { viewHeight } from "csx";
 import { ResetPasswordForm } from "src/components/form/authentification/ResetPasswordForm";
 
 import logo from "../assets/ranking.png";
+import { Helmet } from "react-helmet-async";
 
 const cardCss = style({
   padding: 16,
@@ -19,6 +20,9 @@ export const ResetPasswordPage = () => {
       maxWidth="sm"
       sx={{ minHeight: viewHeight(100), display: "flex", alignItems: "center" }}
     >
+      <Helmet>
+        <title>{`${t("pages.resetpassword.title")} - RankAllAndNothing`}</title>
+      </Helmet>
       <Card variant="outlined" className={cardCss}>
         <Grid container spacing={1} sx={{ textAlign: "center" }}>
           <Grid item xs={12}>

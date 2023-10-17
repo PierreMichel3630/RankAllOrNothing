@@ -1,18 +1,20 @@
 import { Chip, Container, Grid, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "src/App";
 import { getMovieTrending } from "src/api/tmdb/movie";
 import { getTvTrending } from "src/api/tmdb/tv";
 import { CardSearch } from "src/components/commun/CardSearch";
-import { useTranslation } from "react-i18next";
-import { getBreakpoint } from "src/utils/mediaQuery";
-import { useNavigate } from "react-router-dom";
-import { style } from "typestyle";
+import { CardSearchSkeleton } from "src/components/commun/skeleton/Skeleton";
+import { MediaType, TimeTrending } from "src/models/tmdb/enum";
 import { MovieSearchElement } from "src/models/tmdb/movie/MovieSearchElement";
 import { TvSearchElement } from "src/models/tmdb/tv/TvSearchElement";
-import { MediaType, TimeTrending } from "src/models/tmdb/enum";
-import { CardSearchSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { BASEURLMOVIE } from "src/routes/movieRoutes";
+import { getBreakpoint } from "src/utils/mediaQuery";
+import { style } from "typestyle";
+import { MovieContext } from "./HomeMoviesPage";
 
 const titleCss = style({
   cursor: "pointer",
@@ -24,6 +26,7 @@ export const TrendingPage = () => {
   const NUMBERLINESHOW = 1;
   const PAGE = 1;
   const navigate = useNavigate();
+  const { title } = useContext(MovieContext);
   const { language } = useContext(UserContext);
   const { t } = useTranslation();
 
@@ -78,6 +81,11 @@ export const TrendingPage = () => {
 
   return (
     <Container maxWidth="lg">
+      <Helmet>
+        <title>
+          {title ? `${title} - RankAllAndNothing` : "RankAllAndNothing"}
+        </title>
+      </Helmet>
       <Grid
         container
         spacing={1}

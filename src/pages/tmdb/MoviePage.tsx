@@ -1,6 +1,7 @@
 import { Container, Grid } from "@mui/material";
 import { percent, viewHeight } from "csx";
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { UserContext } from "src/App";
 import {
@@ -18,10 +19,12 @@ import { ImageType } from "src/models/tmdb/enum";
 import { MovieDetails } from "src/models/tmdb/movie/MovieDetails";
 import { getBreakpoint } from "src/utils/mediaQuery";
 import { style } from "typestyle";
+import { MovieContext } from "./HomeMoviesPage";
 
 export const MoviePage = () => {
   let { id } = useParams();
   const { language } = useContext(UserContext);
+  const { title } = useContext(MovieContext);
 
   const [detail, setDetail] = useState<undefined | MovieDetails>(undefined);
   const [images, setImages] = useState<Array<Image>>([]);
@@ -99,6 +102,13 @@ export const MoviePage = () => {
 
   return (
     <Grid container>
+      <Helmet>
+        <title>
+          {detail
+            ? `${title ?? ""} - ${detail.title} - RankAllAndNothing`
+            : "RankAllAndNothing"}
+        </title>
+      </Helmet>
       <Grid item xs={12} className={backdropCss}>
         <Container maxWidth="lg" sx={{ position: "relative" }}>
           <HeaderMovie

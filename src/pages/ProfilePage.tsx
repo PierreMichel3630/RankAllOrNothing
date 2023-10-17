@@ -49,7 +49,6 @@ export const ProfilePage = () => {
   useEffect(() => {
     setIsLoading(true);
     getProfile();
-    getFriend();
   }, [id, profile]);
 
   const getThemes = async () => {
@@ -63,9 +62,9 @@ export const ProfilePage = () => {
     getThemes();
   }, []);
 
-  const getFriend = async () => {
-    if (id && profile) {
-      if (id === profile.id) {
+  const getIsAuthorized = async () => {
+    if (id && profile && profileSelect) {
+      if (id === profile.id || profileSelect.ispublic) {
         setIsAuthorized(true);
       } else {
         const { data } = await selectFriendByProfileId(id);
@@ -80,6 +79,10 @@ export const ProfilePage = () => {
       }
     }
   };
+
+  useEffect(() => {
+    getIsAuthorized();
+  }, [id, profile, profileSelect]);
 
   return (
     <Container maxWidth="md">

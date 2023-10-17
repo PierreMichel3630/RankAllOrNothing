@@ -64,7 +64,8 @@ export const Header = () => {
                     onClick={() => navigate("login")}
                   >
                     <AccountCircleIcon
-                      sx={{ fill: Colors.blue, width: 30, height: 30 }}
+                      color="secondary"
+                      sx={{ width: 30, height: 30 }}
                     />
                   </IconButton>
                 </Box>

@@ -40,6 +40,7 @@ import {
 import { Rank } from "src/models/Rank";
 import { getRanksByIdExtern } from "src/api/supabase/rank";
 import { useAuth } from "src/context/AuthProviderSupabase";
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 const posterCss = style({
   width: percent(100),
@@ -213,6 +214,13 @@ export const HeaderMovie = ({ detail, videos, isLoading }: Props) => {
                         <StarRateIcon fontSize="large" />
                       </IconButton>
                     </Tooltip>
+                    <Link to={`${BASEURLMOVIE}/movie/${detail.id}/statistics`}>
+                      <Tooltip title={t("commun.statistic")}>
+                        <IconButton aria-label="Statistic">
+                          <BarChartIcon fontSize="large" />
+                        </IconButton>
+                      </Tooltip>
+                    </Link>
                   </>
                 )}
               </Grid>

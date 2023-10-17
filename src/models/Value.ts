@@ -14,3 +14,12 @@ export interface ValueInsert {
   name: JsonLanguage;
   description: JsonLanguage;
 }
+
+export interface StatsValue {
+  value: number;
+  id_extern: string;
+  avg_rank: number;
+  avg_notation: number;
+  notations: Array<number>;
+  ranks: Array<number>;
+}

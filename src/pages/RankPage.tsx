@@ -13,6 +13,7 @@ import { THEMETMDB } from "src/routes/movieRoutes";
 import { useQuery } from "src/utils/hook";
 
 import LinkIcon from "@mui/icons-material/Link";
+import { Helmet } from "react-helmet-async";
 
 export const RankPage = () => {
   const { t } = useTranslation();
@@ -44,6 +45,9 @@ export const RankPage = () => {
 
   return (
     <Container maxWidth="lg">
+      <Helmet>
+        <title>{`${t("pages.rank.title")} - RankAllAndNothing`}</title>
+      </Helmet>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12} sx={{ textAlign: "center" }}>
           <Typography variant="h2">{t("commun.myrank")}</Typography>

@@ -17,6 +17,8 @@ import { PersonSearchElement } from "src/models/tmdb/person/PersonSearchElement"
 import { TvSearchElement } from "src/models/tmdb/tv/TvSearchElement";
 import { CardSearchSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { BASEURLMOVIE } from "src/routes/movieRoutes";
+import { Helmet } from "react-helmet-async";
+import { MovieContext } from "./HomeMoviesPage";
 
 const divFilterCss = style({
   marginLeft: 15,
@@ -28,9 +30,9 @@ const divFilterCss = style({
 export const TrendingSearchPage = () => {
   const params = useQuery();
   const navigate = useNavigate();
-
-  const { language } = useContext(UserContext);
   const { t } = useTranslation();
+  const { language } = useContext(UserContext);
+  const { title } = useContext(MovieContext);
 
   const page = params.has("page") ? Number(params.get("page")) : 1;
   const type = params.has("type")
@@ -97,6 +99,11 @@ export const TrendingSearchPage = () => {
 
   return (
     <Container maxWidth="lg">
+      <Helmet>
+        <title>{`${title ?? ""} - ${t(
+          "pages.trendingsearch.title"
+        )} - RankAllAndNothing`}</title>
+      </Helmet>
       <Grid container spacing={1}>
         <Grid item xs={12} className={divFilterCss}>
           <Chip

@@ -8,12 +8,12 @@ import moment from "moment";
 import { ExternalIdBlock } from "../commun/ExternalIdBlock";
 import { useContext, useEffect, useState } from "react";
 import { getPersonExternalId } from "src/api/tmdb/person";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { HeaderPersonSkeleton } from "../commun/skeleton/HeaderPersonSkeleton";
 import { openInNewTab } from "src/utils/navigation";
 
 import { Rank } from "src/models/Rank";
-import { THEMETMDB } from "src/routes/movieRoutes";
+import { BASEURLMOVIE, THEMETMDB } from "src/routes/movieRoutes";
 import { getRanksByIdExtern } from "src/api/supabase/rank";
 import { MediaType } from "src/models/tmdb/enum";
 import {
@@ -28,6 +28,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useAuth } from "src/context/AuthProviderSupabase";
 import { VoteBadge } from "../commun/VoteBadge";
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 const posterCss = style({
   width: percent(100),
@@ -245,6 +246,14 @@ export const HeaderPerson = ({ detail, isLoading = false }: Props) => {
                         <StarRateIcon fontSize="large" />
                       </IconButton>
                     </Tooltip>
+
+                    <Link to={`${BASEURLMOVIE}/person/${detail.id}/statistics`}>
+                      <Tooltip title={t("commun.statistic")}>
+                        <IconButton aria-label="Statistic">
+                          <BarChartIcon fontSize="large" />
+                        </IconButton>
+                      </Tooltip>
+                    </Link>
                   </>
                 )}
               </Grid>

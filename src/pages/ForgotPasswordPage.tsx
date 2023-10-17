@@ -6,6 +6,7 @@ import { style } from "typestyle";
 import logo from "../assets/ranking.png";
 import { Link } from "react-router-dom";
 import { ForgotPasswordForm } from "src/components/form/authentification/ForgotPasswordForm";
+import { Helmet } from "react-helmet-async";
 
 const cardCss = style({
   padding: 16,
@@ -18,6 +19,11 @@ export const ForgotPasswordPage = () => {
       maxWidth="sm"
       sx={{ minHeight: viewHeight(100), display: "flex", alignItems: "center" }}
     >
+      <Helmet>
+        <title>{`${t(
+          "pages.forgotpassword.title"
+        )} - RankAllAndNothing`}</title>
+      </Helmet>
       <Card variant="outlined" className={cardCss}>
         <Grid container spacing={1} sx={{ textAlign: "center" }}>
           <Grid item xs={12}>

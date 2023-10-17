@@ -1,6 +1,7 @@
 import { Container, Grid } from "@mui/material";
 import { percent, viewHeight } from "csx";
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { UserContext } from "src/App";
 import { getTvDetails, getTvImage, getTvVideo } from "src/api/tmdb/tv";
@@ -15,10 +16,12 @@ import { ImageType } from "src/models/tmdb/enum";
 import { SerieDetails } from "src/models/tmdb/tv/SerieDetails";
 import { getBreakpoint } from "src/utils/mediaQuery";
 import { style } from "typestyle";
+import { MovieContext } from "./HomeMoviesPage";
 
 export const SeriePage = () => {
   let { id } = useParams();
   const { language } = useContext(UserContext);
+  const { title } = useContext(MovieContext);
 
   const [detail, setDetail] = useState<undefined | SerieDetails>(undefined);
   const [images, setImages] = useState<Array<Image>>([]);
@@ -97,6 +100,13 @@ export const SeriePage = () => {
 
   return (
     <Grid container>
+      <Helmet>
+        <title>
+          {detail
+            ? `${title ?? ""} - ${detail.name} - RankAllAndNothing`
+            : "RankAllAndNothing"}
+        </title>
+      </Helmet>
       <Grid item xs={12} className={backdropCss}>
         <Container maxWidth="lg" sx={{ position: "relative" }}>
           <HeaderSerie

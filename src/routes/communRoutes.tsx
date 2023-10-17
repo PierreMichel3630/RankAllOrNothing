@@ -5,6 +5,7 @@ import { ThemePage } from "src/pages/ThemePage";
 import { TranslatePage } from "src/pages/TranslatePage";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { ComparePage } from "src/pages/ComparePage";
+import { ValuePage } from "src/pages/ValuePage";
 
 export const CommunRoutes = [
   {
@@ -42,5 +43,9 @@ export const CommunRoutes = [
   {
     path: "/translate",
     element: <TranslatePage />,
+  },
+  {
+    path: "/value/:id",
+    element: <ValuePage />,
   },
 ];

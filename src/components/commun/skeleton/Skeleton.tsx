@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid, Skeleton } from "@mui/material";
+import { Card, CardContent, Grid, Paper, Skeleton } from "@mui/material";
 import { percent, px } from "csx";
 
 export const CardSearchSkeleton = () => (
@@ -199,4 +199,19 @@ export const ItemAccountSkeleton = () => (
       <Skeleton width={80} height={15} />
     </Grid>
   </Grid>
+);
+
+export const ReviewSkeleton = () => (
+  <Paper elevation={3} sx={{ p: 2 }}>
+    <Grid container spacing={1} alignItems="center">
+      <Grid item>
+        <Skeleton variant="circular" width={50} height={50} />
+      </Grid>
+      <Grid item>
+        <Skeleton width={150} height={20} />
+        <Skeleton width={400} height={15} />
+        <Skeleton width={200} height={15} />
+      </Grid>
+    </Grid>
+  </Paper>
 );

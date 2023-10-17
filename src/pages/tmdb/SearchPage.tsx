@@ -12,16 +12,18 @@ import { TvSearchElement } from "src/models/tmdb/tv/TvSearchElement";
 import { useTranslation } from "react-i18next";
 import { CardSearchSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { MediaType } from "src/models/tmdb/enum";
-import { SearchContext } from "./HomeMoviesPage";
+import { MovieContext, SearchContext } from "./HomeMoviesPage";
 import { BASEURLMOVIE } from "src/routes/movieRoutes";
+import { Helmet } from "react-helmet-async";
 
 export const SearchPage = () => {
   const params = useQuery();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
   const { language } = useContext(UserContext);
   const { setType } = useContext(SearchContext);
+  const { title } = useContext(MovieContext);
+
   const query = params.has("query") ? (params.get("query") as string) : "";
   const page = params.has("page") ? Number(params.get("page")) : 1;
   const type = params.has("type")
@@ -75,6 +77,11 @@ export const SearchPage = () => {
 
   return (
     <Container maxWidth="lg">
+      <Helmet>
+        <title>{`${title ?? ""} - ${t(
+          "pages.search.title"
+        )} - RankAllAndNothing`}</title>
+      </Helmet>
       <Grid container spacing={2}>
         {isNoResult ? (
           <Grid item xs={12}>

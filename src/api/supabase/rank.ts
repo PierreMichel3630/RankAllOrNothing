@@ -123,3 +123,41 @@ export const getRanksByUserAndThemeAndType = (
     .eq("user_uuid", user_uuid)
     .eq("type", type)
     .order("notation", { ascending: false, nullsFirst: false });
+
+export const getRanksByValue = (id: number) => {
+  return supabase
+    .from(SUPABASE_RANK_TABLE)
+    .select("*, user_uuid!inner(*)")
+    .eq("value", id)
+    .not("opinion", "is", null)
+    .neq("opinion", "");
+};
+
+export const getRanksByIdExternAndType = (id: number, type: string) => {
+  return supabase
+    .from(SUPABASE_RANK_TABLE)
+    .select("*, user_uuid!inner(*)")
+    .eq("id_extern", id)
+    .eq("type", type)
+    .not("opinion", "is", null)
+    .neq("opinion", "");
+};
+
+export const getMaxRankByTheme = (idTheme: number) => {
+  return supabase
+    .from(SUPABASE_RANK_TABLE)
+    .select("rank")
+    .eq("theme", idTheme)
+    .order("rank", { ascending: false })
+    .limit(1);
+};
+
+export const getMaxRankByThemeAndType = (idTheme: number, type: string) => {
+  return supabase
+    .from(SUPABASE_RANK_TABLE)
+    .select("rank")
+    .eq("theme", idTheme)
+    .eq("type", type)
+    .order("rank", { ascending: false })
+    .limit(1);
+};

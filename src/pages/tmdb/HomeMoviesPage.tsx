@@ -3,24 +3,27 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { UserContext } from "src/App";
 import { getMovieGenre, getTvGenre } from "src/api/tmdb/commun";
+import { SearchInput } from "src/components/commun/Input";
 import { Genre } from "src/models/tmdb/commun/Genre";
 import { MediaType } from "src/models/tmdb/enum";
-import { useQuery } from "src/utils/hook";
-import { SearchInput } from "src/components/commun/Input";
 import { BASEURLMOVIE, THEMETMDB } from "src/routes/movieRoutes";
+import { useQuery } from "src/utils/hook";
 
 import { MessageSnackbar } from "src/components/commun/Snackbar";
 import { RankTMDBDialog } from "src/components/dialog/RankTMDBDialog";
 
-import MovieIcon from "@mui/icons-material/Movie";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import MovieIcon from "@mui/icons-material/Movie";
+import { useTranslation } from "react-i18next";
 import {
   countRanksByThemeAndType,
   deleteRank,
   insertCheck,
 } from "src/api/supabase/rank";
-import { useTranslation } from "react-i18next";
 import { useAuth } from "src/context/AuthProviderSupabase";
+import { DEFAULT_ISO_LANGUAGE } from "src/api/supabase/language";
+import { getThemeById } from "src/api/supabase/theme";
+import { Theme } from "src/models/Theme";
 
 export const SearchContext = createContext<{
   type: MediaType | undefined;
@@ -70,6 +73,12 @@ export const RankContext = createContext<{
   setRefresh: (value: undefined | number) => {},
 });
 
+export const MovieContext = createContext<{
+  title: undefined | string;
+}>({
+  title: undefined,
+});
+
 export const HomeMoviesPage = () => {
   const DEFAULTPAGE = 1;
   const params = useQuery();
@@ -95,6 +104,31 @@ export const HomeMoviesPage = () => {
     params.has("type") ? (params.get("type") as MediaType) : undefined
   );
   const [genres, setGenres] = useState<Array<Genre>>([]);
+  const [theme, setTheme] = useState<Theme | undefined>(undefined);
+  const [title, setTitle] = useState<undefined | string>(undefined);
+
+  const getTheme = async () => {
+    const { data } = await getThemeById(2);
+    const res = data as Theme;
+    setTheme(res);
+  };
+
+  useEffect(() => {
+    getTheme();
+  }, []);
+
+  const getTitle = () => {
+    if (theme) {
+      const nameLocalLanguage = theme.name[language.iso];
+      const nameEnglish = theme.name[DEFAULT_ISO_LANGUAGE];
+      const name = nameLocalLanguage ? nameLocalLanguage : nameEnglish;
+      setTitle(name);
+    }
+  };
+
+  useEffect(() => {
+    getTitle();
+  }, [theme, language]);
 
   useEffect(() => {
     Promise.all([getTvGenre(language.iso), getMovieGenre(language.iso)]).then(
@@ -199,66 +233,68 @@ export const HomeMoviesPage = () => {
   }, [itemToCheck]);
 
   return (
-    <RankContext.Provider
-      value={{
-        itemToRank,
-        setItemToRank,
-        itemToCheck,
-        setItemToCheck,
-        refresh,
-        setRefresh,
-      }}
-    >
-      <SearchContext.Provider
-        value={{ type, setType, query, genres, setQuery }}
+    <MovieContext.Provider value={{ title }}>
+      <RankContext.Provider
+        value={{
+          itemToRank,
+          setItemToRank,
+          itemToCheck,
+          setItemToCheck,
+          refresh,
+          setRefresh,
+        }}
       >
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <Container maxWidth="lg">
-              <Grid container spacing={1} alignItems="center">
-                <Grid item>
-                  <Link to={BASEURLMOVIE}>
-                    <IconButton>
-                      <MovieIcon fontSize="large" />
-                    </IconButton>
-                  </Link>
+        <SearchContext.Provider
+          value={{ type, setType, query, genres, setQuery }}
+        >
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <Container maxWidth="lg">
+                <Grid container spacing={1} alignItems="center">
+                  <Grid item>
+                    <Link to={BASEURLMOVIE}>
+                      <IconButton>
+                        <MovieIcon fontSize="large" />
+                      </IconButton>
+                    </Link>
+                  </Grid>
+                  <Grid item xs>
+                    <SearchInput
+                      onChange={(value) => setQuery(value)}
+                      submit={submitSearch}
+                      value={query}
+                      clear={clearSearch}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Link to="/rank?theme=2">
+                      <IconButton>
+                        <EmojiEventsIcon fontSize="large" />
+                      </IconButton>
+                    </Link>
+                  </Grid>
                 </Grid>
-                <Grid item xs>
-                  <SearchInput
-                    onChange={(value) => setQuery(value)}
-                    submit={submitSearch}
-                    value={query}
-                    clear={clearSearch}
-                  />
-                </Grid>
-                <Grid item>
-                  <Link to="/rank?theme=2">
-                    <IconButton>
-                      <EmojiEventsIcon fontSize="large" />
-                    </IconButton>
-                  </Link>
-                </Grid>
-              </Grid>
-            </Container>
-          </Grid>
-          <Grid item xs={12}>
-            <Outlet />
-          </Grid>
-          {itemToRank && (
-            <RankTMDBDialog
-              open={openModalRate}
-              close={closeModalRank}
-              value={itemToRank}
-              validate={validateRank}
+              </Container>
+            </Grid>
+            <Grid item xs={12}>
+              <Outlet />
+            </Grid>
+            {itemToRank && (
+              <RankTMDBDialog
+                open={openModalRate}
+                close={closeModalRank}
+                value={itemToRank}
+                validate={validateRank}
+              />
+            )}
+            <MessageSnackbar
+              open={message !== ""}
+              handleClose={() => setMessage("")}
+              message={message}
             />
-          )}
-          <MessageSnackbar
-            open={message !== ""}
-            handleClose={() => setMessage("")}
-            message={message}
-          />
-        </Grid>
-      </SearchContext.Provider>
-    </RankContext.Provider>
+          </Grid>
+        </SearchContext.Provider>
+      </RankContext.Provider>
+    </MovieContext.Provider>
   );
 };

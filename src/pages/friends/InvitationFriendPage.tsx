@@ -1,5 +1,6 @@
 import { Alert, AlertColor, Divider, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { selectFriend, updateFriend } from "src/api/supabase/friend";
 import {
@@ -63,6 +64,11 @@ export const InvitationFriendPage = () => {
 
   return (
     <Grid container spacing={1}>
+      <Helmet>
+        <title>{`${t(
+          "pages.friendinvitation.title"
+        )} - RankAllAndNothing`}</title>
+      </Helmet>
       <Grid item xs={12}>
         <Typography variant="h2">{t("commun.myinvitation")}</Typography>
       </Grid>

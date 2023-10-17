@@ -2,6 +2,7 @@ import { ValueInsert } from "src/models/Value";
 import { supabase } from "../supabase";
 
 export const SUPABASE_VALUE_TABLE = "value";
+export const SUPABASE_STATS_VALUE_TABLE = "statsvalueview";
 
 export const getValuesByTheme = async (
   idTheme: number,
@@ -32,4 +33,18 @@ export const nextIdValue = () =>
     .select("id")
     .order("id", { ascending: false })
     .limit(1)
+    .single();
+
+export const getValueById = (id: number) =>
+  supabase.from(SUPABASE_VALUE_TABLE).select().eq("id", id).single();
+
+export const getStatsValueById = (id: number) =>
+  supabase.from(SUPABASE_STATS_VALUE_TABLE).select().eq("value", id).single();
+
+export const getStatsValueByExternIdAndType = (id: number, type: string) =>
+  supabase
+    .from(SUPABASE_STATS_VALUE_TABLE)
+    .select()
+    .eq("id_extern", id)
+    .eq("type", type)
     .single();

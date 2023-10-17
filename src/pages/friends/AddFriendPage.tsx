@@ -1,5 +1,6 @@
 import { Alert, AlertColor, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { insertFriend, selectFriend } from "src/api/supabase/friend";
 import { searchProfile } from "src/api/supabase/profile";
@@ -76,6 +77,9 @@ export const AddFriendPage = () => {
 
   return (
     <Grid container spacing={1}>
+      <Helmet>
+        <title>{`${t("pages.friendadd.title")} - RankAllAndNothing`}</title>
+      </Helmet>
       {isLoading ? (
         <Grid item xs={12}>
           <Loading />

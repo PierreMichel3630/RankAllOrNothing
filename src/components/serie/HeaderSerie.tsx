@@ -10,7 +10,7 @@ import {
 import { percent, viewHeight } from "csx";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { style } from "typestyle";
 import { VideoDialog } from "../commun/dialog/VideoDialog";
 
@@ -35,6 +35,7 @@ import StarRateIcon from "@mui/icons-material/StarRate";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useAuth } from "src/context/AuthProviderSupabase";
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 const posterCss = style({
   width: percent(100),
@@ -207,6 +208,13 @@ export const HeaderSerie = ({ detail, videos, isLoading }: Props) => {
                         <StarRateIcon fontSize="large" />
                       </IconButton>
                     </Tooltip>
+                    <Link to={`${BASEURLMOVIE}/tv/${detail.id}/statistics`}>
+                      <Tooltip title={t("commun.statistic")}>
+                        <IconButton aria-label="Statistic">
+                          <BarChartIcon fontSize="large" />
+                        </IconButton>
+                      </Tooltip>
+                    </Link>
                   </>
                 )}
               </Grid>

@@ -27,12 +27,15 @@ import { SortMenu } from "src/components/commun/sort/SortMenu";
 
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { BASEURLMOVIE } from "src/routes/movieRoutes";
+import { Helmet } from "react-helmet-async";
+import { MovieContext } from "./HomeMoviesPage";
 
 export const DiscoverPage = () => {
   const params = useQuery();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { language } = useContext(UserContext);
+  const { title } = useContext(MovieContext);
 
   // PARAMS FILTER
   const sort = params.has("sort")
@@ -201,6 +204,11 @@ export const DiscoverPage = () => {
 
   return (
     <Container maxWidth="lg">
+      <Helmet>
+        <title>{`${title ?? ""} - ${t(
+          "pages.discover.title"
+        )} - RankAllAndNothing`}</title>
+      </Helmet>
       <Grid container spacing={1}>
         <Grid
           item

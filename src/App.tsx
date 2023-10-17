@@ -17,6 +17,7 @@ import "moment/dist/locale/es";
 import { AuthProviderSupabase } from "./context/AuthProviderSupabase";
 import { getLanguages } from "./api/supabase/language";
 import { Language } from "./models/Language";
+import { Helmet } from "react-helmet-async";
 
 const DEFAULT_LANGUAGE: Language = {
   id: 2,
@@ -187,6 +188,11 @@ function App() {
       <UserContext.Provider
         value={{ mode, languages, language, setLanguage, setMode }}
       >
+        <Helmet
+          htmlAttributes={{
+            lang: language.abbreviation,
+          }}
+        />
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <BrowserRouter>

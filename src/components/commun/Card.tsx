@@ -12,7 +12,7 @@ import {
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { percent, px } from "csx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { classes, style } from "typestyle";
 import { ImageNotFoundBlock } from "./ImageBlock";
 import { Cast } from "src/models/tmdb/commun/Cast";
@@ -55,6 +55,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import LinkIcon from "@mui/icons-material/Link";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import { useAuth } from "src/context/AuthProviderSupabase";
 
 const cardCss = style({
@@ -620,73 +621,98 @@ export const CardValue = ({
   const isCheck = rank !== undefined;
 
   return (
-    <Card
-      className={isCheck ? classes(cardHeightCss, cardCheckCss) : cardHeightCss}
-      sx={{ position: "relative" }}
-    >
-      {rank && (
-        <div
-          style={{
-            position: "absolute",
-            top: percent(2),
-            left: percent(2),
-          }}
-        >
-          <RankBadge rank={rank.rank} />
-        </div>
-      )}
-      <CardMedia
-        sx={{
-          width: percent(100),
-          aspectRatio: "auto",
-          height: percent(100),
-          minHeight: px(250),
-        }}
-        image={getUrlPublic(BUCKET_VALUE, value.image)}
-      />
-      <CardContent sx={{ position: "relative", mt: 1 }}>
-        {isCheck && (
+    <Link to={`/value/${value.id}`}>
+      <Card
+        className={
+          isCheck ? classes(cardHeightCss, cardCheckCss) : cardHeightCss
+        }
+        sx={{ position: "relative" }}
+      >
+        {rank && (
           <div
             style={{
               position: "absolute",
-              top: 0,
-              right: percent(2),
-              transform: "translate(0%,-65%)",
+              top: percent(2),
+              left: percent(2),
             }}
           >
-            <VoteBadge value={rank.notation} tooltip={rank.opinion} />
+            <RankBadge rank={rank.rank} />
           </div>
         )}
-        <Typography variant="h4">{name}</Typography>
-        <Tooltip title={description} placement="top">
-          <Typography
-            variant="body1"
-            sx={{
-              display: "-webkit-box",
-              overflow: "hidden",
-              WebkitBoxOrient: "vertical",
-              WebkitLineClamp: 3,
+        <CardMedia
+          sx={{
+            width: percent(100),
+            aspectRatio: "auto",
+            height: percent(100),
+            minHeight: px(250),
+          }}
+          image={getUrlPublic(BUCKET_VALUE, value.image)}
+        />
+        <CardContent sx={{ position: "relative", mt: 1 }}>
+          {isCheck && (
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                right: percent(2),
+                transform: "translate(0%,-65%)",
+              }}
+            >
+              <VoteBadge value={rank.notation} tooltip={rank.opinion} />
+            </div>
+          )}
+          <Typography variant="h4">{name}</Typography>
+          <Tooltip title={description} placement="top">
+            <Typography
+              variant="body1"
+              sx={{
+                display: "-webkit-box",
+                overflow: "hidden",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 3,
+              }}
+            >
+              {description}
+            </Typography>
+          </Tooltip>
+        </CardContent>
+        <CardActions sx={{ justifyContent: "flex-end", display: "flex" }}>
+          <IconButton aria-label="Statistic">
+            <BarChartIcon />
+          </IconButton>
+          {isCheck ? (
+            <IconButton
+              aria-label="Check"
+              onClick={(event) => {
+                event.preventDefault();
+                remove(rank);
+              }}
+            >
+              <ClearIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              aria-label="Check"
+              onClick={(event) => {
+                event.preventDefault();
+                check();
+              }}
+            >
+              <CheckIcon />
+            </IconButton>
+          )}
+          <IconButton
+            aria-label="Rate"
+            onClick={(event) => {
+              event.preventDefault();
+              rate();
             }}
           >
-            {description}
-          </Typography>
-        </Tooltip>
-      </CardContent>
-      <CardActions sx={{ justifyContent: "flex-end", display: "flex" }}>
-        {isCheck ? (
-          <IconButton aria-label="Check" onClick={() => remove(rank)}>
-            <ClearIcon />
+            <StarRateIcon />
           </IconButton>
-        ) : (
-          <IconButton aria-label="Check" onClick={check}>
-            <CheckIcon />
-          </IconButton>
-        )}
-        <IconButton aria-label="Rate" onClick={rate}>
-          <StarRateIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
+    </Link>
   );
 };
 
@@ -817,6 +843,8 @@ interface PropsCardRank {
 
 export const CardRank = ({ index, rank, rate, remove }: PropsCardRank) => {
   const { language } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const nameLocalLanguage = rank.value.name[language.iso];
   const nameEnglish = rank.value.name[DEFAULT_ISO_LANGUAGE];
   const name = nameLocalLanguage ? nameLocalLanguage : nameEnglish;
@@ -843,6 +871,11 @@ export const CardRank = ({ index, rank, rate, remove }: PropsCardRank) => {
   const rateRank = (event: any) => {
     event.preventDefault();
     rate();
+  };
+
+  const goStats = (event: any) => {
+    event.preventDefault();
+    navigate(`/value/${rank.value.id}`);
   };
 
   return (
@@ -905,6 +938,12 @@ export const CardRank = ({ index, rank, rate, remove }: PropsCardRank) => {
         </Tooltip>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end", display: "flex" }}>
+        <IconButton aria-label="Statistic">
+          <BarChartIcon
+            aria-label="Stats"
+            onClick={(event) => goStats(event)}
+          />
+        </IconButton>
         <IconButton aria-label="Remove" onClick={(event) => removeRank(event)}>
           <ClearIcon />
         </IconButton>
@@ -1093,6 +1132,17 @@ export const CardRankTmdb = ({
               gap: px(2),
             }}
           >
+            <Grid item>
+              <Link
+                to={`${BASEURLMOVIE}/${value.type.toString()}/${
+                  value.id
+                }/statistics`}
+              >
+                <IconButton aria-label="Statistic">
+                  <BarChartIcon />
+                </IconButton>
+              </Link>
+            </Grid>
             <Grid item>
               <Link to={`${BASEURLMOVIE}/${value.type.toString()}/${value.id}`}>
                 <IconButton aria-label="Go to">

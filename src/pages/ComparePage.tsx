@@ -1,5 +1,6 @@
 import { Container, Grid } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { UserContext } from "src/App";
 import { selectFriend } from "src/api/supabase/friend";
@@ -61,6 +62,9 @@ export const ComparePage = () => {
 
   return (
     <Container maxWidth="md">
+      <Helmet>
+        <title>{`${t("pages.compare.title")} - RankAllAndNothing`}</title>
+      </Helmet>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <ProfileAutocomplete

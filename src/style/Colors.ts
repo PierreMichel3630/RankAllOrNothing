@@ -1,4 +1,16 @@
-import { green, grey, orange, red, yellow } from "@mui/material/colors";
+import {
+  blue,
+  brown,
+  green,
+  grey,
+  lime,
+  orange,
+  pink,
+  purple,
+  red,
+  teal,
+  yellow,
+} from "@mui/material/colors";
 
 export const Colors = {
   lightgrey: grey[200],
@@ -7,10 +19,15 @@ export const Colors = {
   grey3: "#d3e6f3",
   greyDarkMode: "#8ca3ba",
   greyLightMode: "#5f748d",
-  blue: "#1976d2",
 
+  blue: blue[400],
   green: green[400],
+  teal: teal[300],
+  lime: lime[400],
+  brown: brown[400],
   red: red[400],
+  pink: pink[300],
+  purple: purple[400],
 
   yellow: yellow[600],
   orange: orange[600],

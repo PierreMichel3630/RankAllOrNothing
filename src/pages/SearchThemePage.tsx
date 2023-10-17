@@ -1,5 +1,6 @@
 import { Alert, Button, Container, Grid, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { UserContext } from "src/App";
 import { getThemes } from "src/api/supabase/theme";
@@ -38,6 +39,9 @@ export const SearchThemePage = () => {
 
   return (
     <Container maxWidth="lg">
+      <Helmet>
+        <title>{`${t("pages.home.title")} - RankAllAndNothing`}</title>
+      </Helmet>
       <Grid container spacing={1}>
         <Grid item xs={12} sx={{ textAlign: "center" }}>
           <Typography variant="h2">{t("pages.home.searchtitle")}</Typography>
@@ -88,7 +92,7 @@ export const SearchThemePage = () => {
             <Grid item xs={12} sx={{ marginTop: 2 }}>
               <Alert severity="warning">{t("commun.noresult")}</Alert>
             </Grid>
-            <Grid item xs={12}>
+            {/*<Grid item xs={12}>
               <Button
                 disableElevation
                 fullWidth
@@ -100,7 +104,7 @@ export const SearchThemePage = () => {
               >
                 {t("commun.addtheme")}
               </Button>
-            </Grid>
+        </Grid>*/}
           </>
         )}
       </Grid>
