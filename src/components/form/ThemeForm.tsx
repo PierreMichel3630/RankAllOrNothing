@@ -113,7 +113,7 @@ export const ThemeForm = () => {
   });
 
   const searchTheme = async (search: string) => {
-    const { data } = await getThemes(search, DEFAULT_ISO_LANGUAGE);
+    const { data } = await getThemes(search, DEFAULT_ISO_LANGUAGE, []);
     setEnglishThemes(data as Array<Theme>);
   };
 

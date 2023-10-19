@@ -56,3 +56,5 @@ export const sortByDiff = (a: any, b: any) => {
 
   return a.diff < b.diff ? 1 : -1;
 };
+
+export const sortByName = (a: any, b: any) => (a.name > b.name ? 1 : -1);

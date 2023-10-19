@@ -3,13 +3,23 @@ import { supabase } from "../supabase";
 
 export const SUPABASE_THEME_TABLE = "theme";
 
-export const getThemes = (search: string, languageIso: string) =>
-  search !== ""
+export const getThemes = (
+  search: string,
+  languageIso: string,
+  categories: Array<number>
+) =>
+  categories.length > 0
     ? supabase
         .from(SUPABASE_THEME_TABLE)
         .select()
         .ilike(`name->>${languageIso}`, `%${search}%`)
-    : supabase.from(SUPABASE_THEME_TABLE).select();
+        .in("category", categories)
+        .order(`name->>${languageIso}`)
+    : supabase
+        .from(SUPABASE_THEME_TABLE)
+        .select()
+        .ilike(`name->>${languageIso}`, `%${search}%`)
+        .order(`name->>${languageIso}`);
 
 export const getAllThemes = () => supabase.from(SUPABASE_THEME_TABLE).select();
 

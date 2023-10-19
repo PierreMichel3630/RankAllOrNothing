@@ -18,6 +18,8 @@ import { AuthProviderSupabase } from "./context/AuthProviderSupabase";
 import { getLanguages } from "./api/supabase/language";
 import { Language } from "./models/Language";
 import { Helmet } from "react-helmet-async";
+import { Category } from "./models/Category";
+import { selectCategory } from "./api/supabase/category";
 
 const DEFAULT_LANGUAGE: Language = {
   id: 2,
@@ -30,6 +32,7 @@ const DEFAULT_LANGUAGE: Language = {
 export const UserContext = createContext<{
   language: Language;
   languages: Array<Language>;
+  categories: Array<Category>;
   mode: "light" | "dark";
   setLanguage: (language: Language) => void;
   setMode: (mode: "light" | "dark") => void;
@@ -39,6 +42,7 @@ export const UserContext = createContext<{
       ? (JSON.parse(localStorage.getItem("language")!) as Language)
       : DEFAULT_LANGUAGE,
   languages: [],
+  categories: [],
   mode: "light",
   setLanguage: (language: Language) => {},
   setMode: (mode: "light" | "dark") => {},
@@ -46,14 +50,21 @@ export const UserContext = createContext<{
 
 function App() {
   const [languages, setLanguages] = useState<Array<Language>>([]);
+  const [categories, setCategories] = useState<Array<Category>>([]);
 
   const searchAllLanguage = async () => {
     const { data } = await getLanguages();
     setLanguages(data as Array<Language>);
   };
 
+  const getCategories = async () => {
+    const { data } = await selectCategory();
+    setCategories(data as Array<Category>);
+  };
+
   useEffect(() => {
     searchAllLanguage();
+    getCategories();
   }, []);
 
   const getLanguage = () =>
@@ -186,7 +197,7 @@ function App() {
   return (
     <AuthProviderSupabase>
       <UserContext.Provider
-        value={{ mode, languages, language, setLanguage, setMode }}
+        value={{ mode, categories, languages, language, setLanguage, setMode }}
       >
         <Helmet
           htmlAttributes={{
