@@ -247,7 +247,9 @@ export const HeaderPerson = ({ detail, isLoading = false }: Props) => {
                       </IconButton>
                     </Tooltip>
 
-                    <Link to={`${BASEURLMOVIE}/person/${detail.id}/statistics`}>
+                    <Link
+                      to={`/external/theme/${THEMETMDB}/person/value/${detail.id}/statistic`}
+                    >
                       <Tooltip title={t("commun.statistic")}>
                         <IconButton aria-label="Statistic">
                           <BarChartIcon fontSize="large" />

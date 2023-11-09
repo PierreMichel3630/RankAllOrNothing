@@ -5,6 +5,7 @@ export interface Theme {
   image: string;
   name: JsonLanguage;
   description: JsonLanguage;
+  extern: boolean;
 }
 
 export interface ThemeInsert {

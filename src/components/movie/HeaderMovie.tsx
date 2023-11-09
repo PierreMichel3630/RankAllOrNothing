@@ -214,7 +214,9 @@ export const HeaderMovie = ({ detail, videos, isLoading }: Props) => {
                         <StarRateIcon fontSize="large" />
                       </IconButton>
                     </Tooltip>
-                    <Link to={`${BASEURLMOVIE}/movie/${detail.id}/statistics`}>
+                    <Link
+                      to={`/external/theme/${THEMETMDB}/movie/value/${detail.id}/statistic`}
+                    >
                       <Tooltip title={t("commun.statistic")}>
                         <IconButton aria-label="Statistic">
                           <BarChartIcon fontSize="large" />

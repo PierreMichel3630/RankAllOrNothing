@@ -6,19 +6,19 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
 import { px } from "csx";
+import { Link, useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+import { useAuth } from "src/context/AuthProviderSupabase";
 import { AccountMenu } from "./AccountMenu";
-import { NotificationsMenu } from "./NotificationsMenu";
 import { LanguagesMenu } from "./LanguageMenu";
 import { ModeMenu } from "./ModeMenu";
-import { useTranslation } from "react-i18next";
-import { Colors } from "src/style/Colors";
-import { useAuth } from "src/context/AuthProviderSupabase";
+import { NotificationsMenu } from "./NotificationsMenu";
 
-import logo from "../../assets/ranking.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import logo from "../../assets/ranking.png";
+import { AppsMenu } from "./AppsMenu";
 
 export const Header = () => {
   const { user } = useAuth();
@@ -43,6 +43,7 @@ export const Header = () => {
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
             <ModeMenu />
             <LanguagesMenu />
+            <AppsMenu />
             {user && <NotificationsMenu />}
             {user ? (
               <AccountMenu user={user} />

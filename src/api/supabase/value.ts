@@ -41,10 +41,23 @@ export const getValueById = (id: number) =>
 export const getStatsValueById = (id: number) =>
   supabase.from(SUPABASE_STATS_VALUE_TABLE).select().eq("value", id).single();
 
-export const getStatsValueByExternIdAndType = (id: number, type: string) =>
+export const getStatsValueByExternIdAndTypeAndTheme = (
+  id: number,
+  type: string,
+  theme: number
+) =>
   supabase
     .from(SUPABASE_STATS_VALUE_TABLE)
     .select()
     .eq("id_extern", id)
     .eq("type", type)
+    .eq("theme", theme)
+    .single();
+
+export const getStatsValueByExternIdAndTheme = (id: number, theme: number) =>
+  supabase
+    .from(SUPABASE_STATS_VALUE_TABLE)
+    .select()
+    .eq("id_extern", id)
+    .eq("theme", theme)
     .single();

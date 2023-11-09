@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { UserContext } from "src/App";
 import { getThemes } from "src/api/supabase/theme";
 import { CategoriesChips } from "src/components/CategoriesChips";
-import { CardTheme } from "src/components/commun/Card";
+import { CardTheme } from "src/components/card/CardTheme";
 import { BasicSearchInput } from "src/components/commun/Input";
 import { CardSkeleton } from "src/components/commun/skeleton/Skeleton";
 import { CreateThemeDialog } from "src/components/dialog/CreateThemeDialog";

@@ -6,6 +6,8 @@ import { TranslatePage } from "src/pages/TranslatePage";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { ComparePage } from "src/pages/ComparePage";
 import { ValuePage } from "src/pages/ValuePage";
+import { ThemeTwitchChannelPage } from "src/pages/external/ThemeTwitchChannelPage";
+import { ValueExternalPage } from "src/pages/external/ValueExternalPage";
 
 export const CommunRoutes = [
   {
@@ -15,6 +17,18 @@ export const CommunRoutes = [
   {
     path: "/theme/:id",
     element: <ThemePage />,
+  },
+  {
+    path: "/external/theme/:id",
+    element: <ThemeTwitchChannelPage />,
+  },
+  {
+    path: "/external/theme/:theme/value/:id/statistic",
+    element: <ValueExternalPage />,
+  },
+  {
+    path: "/external/theme/:theme/:type/value/:id/statistic",
+    element: <ValueExternalPage />,
   },
   {
     path: "/rank",

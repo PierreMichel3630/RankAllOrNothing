@@ -10,7 +10,7 @@ import { TrendingSearchPage } from "src/pages/tmdb/TrendingSearchPage";
 import { ValuePage } from "src/pages/tmdb/ValuePage";
 
 export const THEMETMDB = 2;
-export const BASEURLMOVIE = "/theme/2";
+export const BASEURLMOVIE = "/external/theme/2";
 export const MovieRoutes = [
   {
     path: BASEURLMOVIE,
@@ -19,10 +19,6 @@ export const MovieRoutes = [
       {
         path: BASEURLMOVIE,
         element: <TrendingPage />,
-      },
-      {
-        path: BASEURLMOVIE + "/:type/:id/statistics",
-        element: <ValuePage />,
       },
       {
         path: BASEURLMOVIE + "/search",

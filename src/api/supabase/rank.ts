@@ -48,13 +48,12 @@ export const calculationRankType = (
         .eq("user_uuid", useruuid)
         .gt("notation", notation);
 
-export const countRanksByTheme = (useruuid: string, idTheme: number) => {
-  return supabase
+export const countRanksByTheme = (useruuid: string, idTheme: number) =>
+  supabase
     .from(SUPABASE_RANK_TABLE)
     .select("*", { count: "exact", head: true })
     .eq("theme", idTheme)
     .eq("user_uuid", useruuid);
-};
 
 export const countRanksByThemeAndType = (
   useruuid: string,
@@ -80,8 +79,8 @@ export const getRanksByIdExtern = (
   id: number,
   idTheme: number,
   type: string
-) => {
-  return supabase
+) =>
+  supabase
     .from(SUPABASE_RANK_TABLE)
     .select()
     .eq("id_extern", id)
@@ -89,7 +88,6 @@ export const getRanksByIdExtern = (
     .eq("type", type)
     .eq("user_uuid", useruuid)
     .maybeSingle();
-};
 
 export const insertCheck = (value: CheckInsert) =>
   supabase.from(SUPABASE_RANK_TABLE).insert({ ...value });
@@ -124,40 +122,50 @@ export const getRanksByUserAndThemeAndType = (
     .eq("type", type)
     .order("notation", { ascending: false, nullsFirst: false });
 
-export const getRanksByValue = (id: number) => {
-  return supabase
+export const getRanksByValue = (id: number) =>
+  supabase
     .from(SUPABASE_RANK_TABLE)
     .select("*, user_uuid!inner(*)")
     .eq("value", id)
     .not("opinion", "is", null)
     .neq("opinion", "");
-};
 
-export const getRanksByIdExternAndType = (id: number, type: string) => {
-  return supabase
+export const getRanksByIdExternAndTypeAndTheme = (
+  id: number,
+  type: string,
+  theme: number
+) =>
+  supabase
     .from(SUPABASE_RANK_TABLE)
     .select("*, user_uuid!inner(*)")
     .eq("id_extern", id)
     .eq("type", type)
+    .eq("theme", theme)
     .not("opinion", "is", null)
     .neq("opinion", "");
-};
 
-export const getMaxRankByTheme = (idTheme: number) => {
-  return supabase
+export const getRanksByIdExternAndTheme = (id: number, theme: number) =>
+  supabase
+    .from(SUPABASE_RANK_TABLE)
+    .select("*, user_uuid!inner(*)")
+    .eq("id_extern", id)
+    .eq("theme", theme)
+    .not("opinion", "is", null)
+    .neq("opinion", "");
+
+export const getMaxRankByTheme = (idTheme: number) =>
+  supabase
     .from(SUPABASE_RANK_TABLE)
     .select("rank")
     .eq("theme", idTheme)
     .order("rank", { ascending: false })
     .limit(1);
-};
 
-export const getMaxRankByThemeAndType = (idTheme: number, type: string) => {
-  return supabase
+export const getMaxRankByThemeAndType = (idTheme: number, type: string) =>
+  supabase
     .from(SUPABASE_RANK_TABLE)
     .select("rank")
     .eq("theme", idTheme)
     .eq("type", type)
     .order("rank", { ascending: false })
     .limit(1);
-};

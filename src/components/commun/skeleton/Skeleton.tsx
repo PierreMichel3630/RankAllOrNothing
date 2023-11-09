@@ -155,6 +155,22 @@ export const CardFriendSkeleton = () => (
   </Card>
 );
 
+export const CardHorizontalSkeleton = () => (
+  <Card>
+    <CardContent>
+      <Grid container flexDirection="row" alignItems="center" spacing={4}>
+        <Grid item>
+          <Skeleton variant="circular" width={80} height={80} />
+        </Grid>
+        <Grid item>
+          <Skeleton width={150} height={15} />
+          <Skeleton width={80} height={15} />
+        </Grid>
+      </Grid>
+    </CardContent>
+  </Card>
+);
+
 export const NotificationSkeleton = () => (
   <Grid
     container

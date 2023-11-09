@@ -1,3 +1,5 @@
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   Card,
   CardActions,
@@ -9,53 +11,45 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { percent, px } from "csx";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { classes, style } from "typestyle";
-import { ImageNotFoundBlock } from "./ImageBlock";
+import { BUCKET_VALUE, getUrlPublic } from "src/api/supabase/storage";
+import { Rank } from "src/models/Rank";
+import { Value } from "src/models/Value";
 import { Cast } from "src/models/tmdb/commun/Cast";
+import { GuestStar } from "src/models/tmdb/commun/GuestStar";
 import { EpisodeDetail } from "src/models/tmdb/tv/EpisodeDetail";
 import { TvAggregateCreditCast } from "src/models/tmdb/tv/TvAggregateCreditCast";
-import { useTranslation } from "react-i18next";
-import { GuestStar } from "src/models/tmdb/commun/GuestStar";
-import { Theme } from "src/models/Theme";
-import {
-  BUCKET_THEME,
-  BUCKET_VALUE,
-  getUrlPublic,
-} from "src/api/supabase/storage";
-import { Value } from "src/models/Value";
-import { Rank } from "src/models/Rank";
 import { Colors } from "src/style/Colors";
+import { classes, style } from "typestyle";
+import { ImageNotFoundBlock } from "./ImageBlock";
 
-import { VoteBadge } from "./VoteBadge";
-import { UserContext } from "src/App";
 import { useContext, useEffect, useState } from "react";
+import { UserContext } from "src/App";
 import { DEFAULT_ISO_LANGUAGE } from "src/api/supabase/language";
-import { AvatarGroupFlag } from "./Avatar";
-import { TranslateForm } from "../form/TranslateForm";
-import { BASEURLMOVIE, THEMETMDB } from "src/routes/movieRoutes";
-import { MediaType } from "src/models/tmdb/enum";
+import { getRanksByIdExtern } from "src/api/supabase/rank";
+import { getMovieDetails } from "src/api/tmdb/movie";
 import { getPersonDetails } from "src/api/tmdb/person";
 import { getTvDetails } from "src/api/tmdb/tv";
-import { getMovieDetails } from "src/api/tmdb/movie";
+import { MediaType } from "src/models/tmdb/enum";
 import {
   ItemToCheck,
   ItemToRank,
   RankContext,
 } from "src/pages/tmdb/HomeMoviesPage";
-import { getRanksByIdExtern } from "src/api/supabase/rank";
+import { BASEURLMOVIE, THEMETMDB } from "src/routes/movieRoutes";
+import { TranslateForm } from "../form/TranslateForm";
 import { RankBadge } from "./RankBadge";
+import { VoteBadge } from "./VoteBadge";
 
-import StarRateIcon from "@mui/icons-material/StarRate";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import LinkIcon from "@mui/icons-material/Link";
-import BarChartIcon from "@mui/icons-material/BarChart";
+import StarRateIcon from "@mui/icons-material/StarRate";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useAuth } from "src/context/AuthProviderSupabase";
 
 const cardCss = style({
@@ -521,66 +515,6 @@ export const CardEpisode = ({ value }: PropsEpisode) => {
             </CardContent>
           </Grid>
         </Grid>
-      </Card>
-    </Link>
-  );
-};
-
-interface PropsCardTheme {
-  value: Theme;
-}
-
-export const CardTheme = ({ value }: PropsCardTheme) => {
-  const { language } = useContext(UserContext);
-
-  const nameLocalLanguage = value.name[language.iso];
-  const nameEnglish = value.name[DEFAULT_ISO_LANGUAGE];
-  const name = nameLocalLanguage ? nameLocalLanguage : nameEnglish;
-
-  const descriptionLocalLanguage = value.description[language.iso];
-  const descriptionEnglish = value.description[DEFAULT_ISO_LANGUAGE];
-  const description = descriptionLocalLanguage
-    ? descriptionLocalLanguage
-    : descriptionEnglish;
-
-  return (
-    <Link to={`/theme/${value.id}`}>
-      <Card className={cardHeightCss}>
-        <CardMedia
-          sx={{
-            width: percent(100),
-            aspectRatio: "auto",
-            minHeight: px(250),
-          }}
-          image={getUrlPublic(BUCKET_THEME, value.image)}
-          title={name}
-        />
-        <CardContent sx={{ position: "relative" }}>
-          <>
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                transform: "translate(0%,-50%)",
-              }}
-            >
-              <AvatarGroupFlag json={value.name} />
-            </div>
-            <Typography variant="h4">{name}</Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                display: "-webkit-box",
-                overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 3,
-              }}
-            >
-              {description}
-            </Typography>
-          </>
-        </CardContent>
       </Card>
     </Link>
   );
@@ -1134,9 +1068,9 @@ export const CardRankTmdb = ({
           >
             <Grid item>
               <Link
-                to={`${BASEURLMOVIE}/${value.type.toString()}/${
+                to={`/external/theme/${THEMETMDB}/${value.type.toString()}/value/${
                   value.id
-                }/statistics`}
+                }/statistic`}
               >
                 <IconButton aria-label="Statistic">
                   <BarChartIcon />

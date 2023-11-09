@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "node-cache": "https://esm.sh/node-cache@5.1.2"
+  }
+}

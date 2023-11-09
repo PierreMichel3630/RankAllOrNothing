@@ -6,10 +6,10 @@ import { useParams } from "react-router-dom";
 import { UserContext } from "src/App";
 import {
   getMaxRankByThemeAndType,
-  getRanksByIdExternAndType,
+  getRanksByIdExternAndTypeAndTheme,
 } from "src/api/supabase/rank";
+import { getStatsValueByExternIdAndTypeAndTheme } from "src/api/supabase/value";
 
-import { getStatsValueByExternIdAndType } from "src/api/supabase/value";
 import { getMovieDetails } from "src/api/tmdb/movie";
 import { getPersonDetails } from "src/api/tmdb/person";
 import { getTvDetails } from "src/api/tmdb/tv";
@@ -18,7 +18,7 @@ import { CardReview } from "src/components/card/CardReview";
 import { DataDonut, DonutChart } from "src/components/chart/DonutChart";
 import { Loading } from "src/components/commun/Loading";
 import { ReviewSkeleton } from "src/components/commun/skeleton/Skeleton";
-import { HeaderExternValue } from "src/components/value/HeaderValue";
+import { HeaderExternValue } from "src/components/value/HeaderExternValue";
 import { Review } from "src/models/Review";
 import { StatsValue } from "src/models/Value";
 import { MediaType } from "src/models/tmdb/enum";
@@ -203,7 +203,11 @@ export const ValuePage = () => {
 
   const getStatsValue = async () => {
     if (id && type) {
-      const { data } = await getStatsValueByExternIdAndType(Number(id), type);
+      const { data } = await getStatsValueByExternIdAndTypeAndTheme(
+        Number(id),
+        type,
+        THEMETMDB
+      );
       if (data !== null) {
         setStatsValue(data as StatsValue);
       }
@@ -213,7 +217,11 @@ export const ValuePage = () => {
   const getReview = async () => {
     setIsLoadingReview(true);
     if (id && type) {
-      const { data } = await getRanksByIdExternAndType(Number(id), type);
+      const { data } = await getRanksByIdExternAndTypeAndTheme(
+        Number(id),
+        type,
+        THEMETMDB
+      );
       setReviews(data as Array<Review>);
       setIsLoadingReview(false);
     }
