@@ -1,6 +1,6 @@
 # RankAllOrNothing
 
-Application permettant de rechercher des titres, artistes, albums, podcast.
+Application permettant de classer des éléments suivants différents thèmes (Musique, Films/serie, Animaux, ...).
 Disponible sur https://rankallandnothing.web.app/
 
 ## Technique
